@@ -100,7 +100,7 @@ export default function TabelPage() {
   return (
     <>
       <Topbar titleKey="nav_tabel" />
-      <main style={{ padding: 24, fontFamily: "'Inter', sans-serif" }}>
+      <main style={{ padding: 24, fontFamily: "'Inter', sans-serif", overflowX: "hidden", maxWidth: "100%" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <span style={{ fontSize: 20, fontWeight: 800 }}>{t("tabel_page_title")}</span>
           <button
