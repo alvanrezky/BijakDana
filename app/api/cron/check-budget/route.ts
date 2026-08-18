@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 const CATEGORY_LABELS: Record<string, string> = {
   makan: "Makan & Minum", transport: "Transportasi", sewa: "Sewa/Kos/KPR",
   listrik: "Listrik/Air/Internet", hiburan: "Hiburan", kesehatan: "Kesehatan",
@@ -17,6 +12,18 @@ export async function GET(request: Request) {
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceKey) {
+    return NextResponse.json(
+      { error: "SUPABASE_SERVICE_ROLE_KEY belum di-set di environment variables" },
+      { status: 500 }
+    );
+  }
+
+  const supabaseAdmin = createClient(supabaseUrl, serviceKey);
 
   const monthKey = new Date().toISOString().slice(0, 7);
   const monthStart = `${monthKey}-01`;
@@ -53,7 +60,7 @@ export async function GET(request: Request) {
         .from("notification_log")
         .insert({ user_id: user.id, type: "budget_exceeded", ref_key: refKey });
 
-      if (logError) continue; // sudah pernah dicatat bulan ini, skip
+      if (logError) continue;
 
       const catLabel = CATEGORY_LABELS[b.cat] || b.cat;
       const fmt = (n: number) => "Rp " + n.toLocaleString("id-ID");
