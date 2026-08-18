@@ -12,6 +12,7 @@ import { deleteAllTransactions } from "@/lib/services/transactions.service";
 import { deleteAllBudgets } from "@/lib/services/budget.service";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { Profile } from "@/types/models";
+import AppearanceSettingsCard from "@/features/profil/AppearanceSettingsCard";
 
 export default function ProfilPage() {
   const { t } = useLanguage();
@@ -72,7 +73,7 @@ export default function ProfilPage() {
         <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 20 }}>{t("profil_page_title")}</div>
 
         <ProfilHeaderCard profile={profile} />
-
+        <AppearanceSettingsCard />
         <ProfilSubscriptionCard onExtend={() => setSubModalOpen(true)} />
 
         <ProfilMenuList

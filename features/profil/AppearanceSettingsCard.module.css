@@ -1,0 +1,168 @@
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.toggleBtn {
+  width: 44px;
+  height: 24px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  background: var(--border);
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+.toggleBtn.on {
+  background: var(--green);
+}
+.toggleKnob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+.toggleBtn.on .toggleKnob {
+  transform: translateX(20px);
+}
+.langSegment {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 76px;
+  height: 26px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.langSlider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 2px);
+  height: calc(100% - 4px);
+  background: var(--green);
+  border-radius: 16px;
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.langBtn {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: none;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text3);
+  cursor: pointer;
+  border-radius: 16px;
+}
+.langBtnActive {
+  color: #fff;
+}
+.accentWrap {
+  position: relative;
+}
+.accentTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+}
+.accentDot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 3px var(--border);
+}
+.accentText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  min-width: 0;
+}
+.accentLabel {
+  font-size: 10px;
+  color: var(--text3);
+}
+.accentValue {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.accentTrigger svg {
+  color: var(--text2);
+  flex-shrink: 0;
+}
+.accentPopover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  z-index: 50;
+}
+.accentPopoverTitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 10px;
+}
+.accentGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+.swatch,
+.swatchActive {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swatchActive {
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--text);
+}

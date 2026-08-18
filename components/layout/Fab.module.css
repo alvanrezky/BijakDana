@@ -23,3 +23,12 @@
 .fab:hover {
   filter: brightness(1.08);
 }
+
+@media (max-width: 768px) {
+  .fab {
+    bottom: calc(62px + 16px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}

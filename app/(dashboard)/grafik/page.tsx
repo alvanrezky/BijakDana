@@ -49,7 +49,7 @@ export default function GrafikPage() {
 
         <GrafikPeriodTabs period={period} onChange={setPeriod} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 16 }}>
           <GrafikDonutCard stats={stats} />
           <GrafikSummaryCard stats={stats} />
           <GrafikDailyChart transactions={transactions} period={period} />

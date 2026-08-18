@@ -17,7 +17,7 @@ export default function TabelStatsRow({ stats, filteredCount }: { stats: PeriodS
   ];
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 12, marginBottom: 16 }}>
       {items.map((item) => (
         <div key={item.label} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: 16 }}>
           <div style={{ fontSize: 11, color: "var(--text2)", marginBottom: 3 }}>{item.label}</div>

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/lib/theme/ThemeContext'
 import { LanguageProvider } from '@/lib/i18n/LanguageContext'
@@ -6,6 +6,12 @@ import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 export const metadata: Metadata = {
   title: 'BijakDana — Catat. Rencanakan. Bertumbuh.',
   description: 'Aplikasi keuangan personal untuk anak muda Indonesia',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 }
 
 export default function RootLayout({

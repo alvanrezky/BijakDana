@@ -50,12 +50,12 @@
 .tooltip {
   position: absolute;
   top: 6px;
-  transform: translateX(0);
   background: #111827;
   color: #fff;
   border-radius: 12px;
   padding: 12px 14px;
-  min-width: 200px;
+  width: 220px;
+  max-width: calc(100vw - 60px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   pointer-events: none;
   z-index: 5;

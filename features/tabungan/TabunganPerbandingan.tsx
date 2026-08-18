@@ -99,8 +99,10 @@ export default function TabunganPerbandingan({ defaultMonthly }: { defaultMonthl
 
   const activeIdx = hoverIdx ?? projections.length - 1;
   const activeYear = HORIZONS[activeIdx];
-  const tooltipLeftPct = (xPos(activeIdx) / CHART_W) * 100;
-  const clampedLeftPct = Math.min(78, Math.max(4, tooltipLeftPct));
+  const tooltipWidthPx = 220;
+  const containerWidthPx = svgRef.current?.getBoundingClientRect().width || CHART_W;
+  const rawLeftPx = (xPos(activeIdx) / CHART_W) * containerWidthPx;
+  const clampedLeftPx = Math.min(containerWidthPx - tooltipWidthPx - 8, Math.max(8, rawLeftPx - tooltipWidthPx / 2));
 
   return (
     <motion.div
@@ -214,7 +216,7 @@ export default function TabunganPerbandingan({ defaultMonthly }: { defaultMonthl
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.15 }}
             className={styles.tooltip}
-            style={{ left: `${clampedLeftPct}%` }}
+            style={{ left: `${clampedLeftPx}px` }}
           >
             <div className={styles.tooltipYear}>
               {t("perbandingan_tooltip_horizon")} {activeYear} {t("perbandingan_tooltip_years")}
