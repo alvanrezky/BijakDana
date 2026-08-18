@@ -31,7 +31,7 @@ export default function Login() {
       }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img
-            src="/logo1.png"
+            src="/logo-bijakdana.png"
             alt="BijakDana"
             style={{ width: 80, height: 80, margin: '0 auto 12px', display: 'block', borderRadius: 0, background: 'transparent' }}
           />

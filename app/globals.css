@@ -1,26 +1,90 @@
-@import "tailwindcss";
+:root,
+[data-theme="light"] {
+  --bg: #F3F4F6;
+  --card: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #111827;
+  --text2: #6B7280;
+  --text3: #9CA3AF;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --red: #EF4444;
+  --red-lt: #FEF2F2;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="dark"] {
+  --bg: #0F1115;
+  --card: #1A1D23;
+  --border: #2A2E37;
+  --text: #F3F4F6;
+  --text2: #9CA3AF;
+  --text3: #6B7280;
+
+  --red: #F87171;
+  --red-lt: #3A1D1D;
+  --date-icon-filter: invert(1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ===== Warna aksen: cukup 1 nilai dasar per aksen, sisanya dihitung otomatis ===== */
+[data-accent="green"] { --green: #1D9E75; }
+[data-accent="emerald"] { --green: #10B981; }
+[data-accent="teal"] { --green: #14B8A6; }
+[data-accent="cyan"] { --green: #06B6D4; }
+[data-accent="sky"] { --green: #0EA5E9; }
+[data-accent="blue"] { --green: #3B82F6; }
+[data-accent="indigo"] { --green: #6366F1; }
+[data-accent="violet"] { --green: #8B5CF6; }
+[data-accent="purple"] { --green: #A855F7; }
+[data-accent="fuchsia"] { --green: #D946EF; }
+[data-accent="pink"] { --green: #EC4899; }
+[data-accent="rose"] { --green: #F43F5E; }
+[data-accent="red"] { --green: #EF4444; }
+[data-accent="orange"] { --green: #F97316; }
+[data-accent="amber"] { --green: #F59E0B; }
+[data-accent="yellow"] { --green: #EAB308; }
+[data-accent="lime"] { --green: #84CC16; }
+[data-accent="mint"] { --green: #22C55E; }
+[data-accent="slate"] { --green: #64748B; }
+[data-accent="gray"] { --green: #6B7280; }
+[data-accent="zinc"] { --green: #71717A; }
+[data-accent="stone"] { --green: #78716C; }
+[data-accent="brown"] { --green: #92400E; }
+[data-accent="maroon"] { --green: #7F1D1D; }
+[data-accent="navy"] { --green: #1E3A8A; }
 
+:root,
+[data-theme="light"] {
+  --green-d: color-mix(in srgb, var(--green) 82%, black);
+  --green-lt: color-mix(in srgb, var(--green) 12%, white);
+}
+[data-theme="dark"] {
+  --green-d: color-mix(in srgb, var(--green) 70%, white);
+  --green-lt: color-mix(in srgb, var(--green) 24%, black);
+}
+:root,
+[data-theme="light"] {
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] {
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+:root,
+[data-theme="light"] {
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 14px 32px rgba(0, 0, 0, 0.12), 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+[data-theme="dark"] {
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 22px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.5);
+}
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background 0.2s ease, color 0.2s ease;
 }

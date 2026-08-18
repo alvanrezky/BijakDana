@@ -1,0 +1,22 @@
+.srow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.sc {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.scl {
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 3px;
+}
+.scv {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}

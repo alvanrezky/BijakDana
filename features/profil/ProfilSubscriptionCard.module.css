@@ -1,0 +1,33 @@
+.subCard {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.label {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.plan {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.expiry {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 14px;
+}
+.extendBtn {
+  background: #fff;
+  color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}

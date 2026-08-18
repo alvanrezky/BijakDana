@@ -1,0 +1,148 @@
+.jgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.jcard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.jheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.jico {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.headerActions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.jbtn {
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.editBtn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.editBtn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+.jtitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: var(--text);
+}
+.jsub {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 10px;
+  min-height: 16px;
+}
+.jpct {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--green);
+}
+.pbar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+.pfill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.jamts {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 6px;
+}
+.jproj {
+  font-size: 12px;
+  color: var(--text2);
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.addCard {
+  background: none;
+  border: 1.5px dashed var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  min-height: 140px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  font-family: inherit;
+}
+.addCard:hover {
+  border-color: var(--green);
+  background: var(--green-lt);
+}
+.addIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--text3);
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 300;
+}
+.addCard:hover .addIcon {
+  border-color: var(--green);
+  color: var(--green);
+}
+.addLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+}
+.addCard:hover .addLabel {
+  color: var(--green);
+}

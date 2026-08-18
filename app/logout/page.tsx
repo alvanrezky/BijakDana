@@ -6,7 +6,6 @@ export default function Logout() {
   useEffect(() => {
     async function doLogout() {
       await supabase.auth.signOut()
-      localStorage.clear()
       window.location.href = '/login'
     }
     doLogout()
@@ -18,11 +17,7 @@ export default function Logout() {
       justifyContent: 'center', background: '#F0FBF8',
       fontFamily: 'Inter, sans-serif', flexDirection: 'column', gap: 12
     }}>
-      <div style={{
-        width: 48, height: 48, background: '#00C896', borderRadius: 14,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 18, fontWeight: 800, color: '#fff'
-      }}>BD</div>
+      <img src="/logo-bijakdana.png" alt="BijakDana" style={{ width: 48, height: 48 }} />
       <div style={{ fontSize: 15, color: '#5A7A70', fontWeight: 500 }}>
         Sedang keluar dari akun...
       </div>

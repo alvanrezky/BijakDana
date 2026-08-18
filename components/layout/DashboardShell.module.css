@@ -1,0 +1,12 @@
+.content {
+  margin-left: 240px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    padding-bottom: 62px;
+  }
+}

@@ -1,0 +1,137 @@
+.group {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.hdate {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  padding: 14px 0 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+.txitem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.txitem:last-child {
+  border-bottom: none;
+}
+.txico {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+.txb {
+  flex: 1;
+  min-width: 0;
+}
+.txn {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+.txm {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 1px;
+}
+.txr {
+  text-align: right;
+  flex-shrink: 0;
+}
+.txaOut {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--red);
+}
+.txaInc {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+.badgeOk {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 2px;
+  font-weight: 500;
+  background: var(--green-lt);
+  color: var(--green-d);
+}
+.badgeOver {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 2px;
+  font-weight: 500;
+  background: var(--red-lt);
+  color: var(--red);
+}
+.badgeInc {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 2px;
+  font-weight: 500;
+  background: var(--green-lt);
+  color: var(--green-d);
+}
+.txactions {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.txact,
+.txactDel {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  transition: all 0.15s;
+}
+.txact:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+.txactDel:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+.emptyState {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text2);
+  font-size: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}

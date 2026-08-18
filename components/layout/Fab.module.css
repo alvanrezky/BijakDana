@@ -1,0 +1,25 @@
+.fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  background: var(--green);
+  border-radius: 50%;
+  border: 3px solid var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  box-shadow: var(--shadow-lg);
+  z-index: 150;
+}
+.fab svg {
+  width: 26px;
+  height: 26px;
+  stroke-width: 2.5;
+}
+.fab:hover {
+  filter: brightness(1.08);
+}

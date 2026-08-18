@@ -1,0 +1,145 @@
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--text);
+}
+.sub {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 14px;
+}
+.field {
+  margin-bottom: 18px;
+  max-width: 280px;
+}
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: var(--text);
+}
+.field input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--card);
+  color: var(--text);
+}
+.chartWrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+.svg {
+  width: 100%;
+  height: auto;
+  cursor: crosshair;
+}
+.tooltip {
+  position: absolute;
+  top: 6px;
+  transform: translateX(0);
+  background: #111827;
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-width: 200px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  z-index: 5;
+}
+.tooltipYear {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  padding: 3px 0;
+}
+.tooltipDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tooltipLabel {
+  flex: 1;
+  color: #e5e7eb;
+}
+.tooltipReturn {
+  color: #9ca3af;
+  font-size: 10.5px;
+}
+.tooltipValue {
+  font-weight: 700;
+  color: #fff;
+  min-width: 68px;
+  text-align: right;
+}
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+.legendItem:hover {
+  background: var(--bg);
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legendText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.legendLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.legendMeta {
+  font-size: 11px;
+  color: var(--text3);
+}
+.legendValue {
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--text);
+}
+.disclaimer {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 14px;
+  line-height: 1.5;
+}

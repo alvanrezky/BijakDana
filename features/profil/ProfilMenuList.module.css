@@ -1,0 +1,36 @@
+.mlist {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.mli {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mli:last-child {
+  border-bottom: none;
+}
+.mli:hover {
+  background: var(--bg);
+}
+.mlico {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mllbl {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+}
