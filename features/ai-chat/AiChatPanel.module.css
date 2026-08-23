@@ -69,6 +69,7 @@
 .messages {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 18px 16px;
   display: flex;
   flex-direction: column;
@@ -97,6 +98,8 @@
   font-size: 13px;
   flex-shrink: 0;
 }
+
+/* Bubble AI: block biasa, BUKAN flex — supaya konten markdown (p, ul, li) tidak ikut jadi flex-item */
 .bubbleAi {
   background: var(--card);
   border: 1px solid var(--border);
@@ -105,10 +108,13 @@
   font-size: 13px;
   line-height: 1.6;
   color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  display: block;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
+
 .bubbleUser {
   background: var(--green);
   color: #fff;
@@ -117,6 +123,34 @@
   font-size: 13px;
   line-height: 1.6;
   max-width: 85%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Elemen hasil render markdown di dalam bubbleAi */
+.bubbleAi p {
+  margin: 0 0 0.5rem 0;
+}
+.bubbleAi p:last-child {
+  margin-bottom: 0;
+}
+.bubbleAi ul,
+.bubbleAi ol {
+  margin: 0.4rem 0;
+  padding-left: 1.2rem;
+}
+.bubbleAi li {
+  margin-bottom: 0.2rem;
+}
+.bubbleAi strong {
+  font-weight: 700;
+}
+
+/* Container khusus untuk animasi titik "typing..." — flex terpisah dari bubbleAi */
+.typingRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .typingDot {
@@ -182,44 +216,4 @@
 }
 .sendBtn:hover {
   background: var(--green-d);
-}
-.bubbleAi ul,
-.bubbleAi ol {
-  margin: 0.4rem 0;
-  padding-left: 1.2rem;
-}
-
-.bubbleAi li {
-  margin-bottom: 0.2rem;
-}
-
-.bubbleAi p {
-  margin: 0 0 0.4rem 0;
-}
-
-.bubbleAi p:last-child {
-  margin-bottom: 0;
-}
-.bubbleAi {
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-.bubbleAi ul,
-.bubbleAi ol {
-  margin: 0.4rem 0;
-  padding-left: 1.2rem;
-}
-
-.bubbleAi li {
-  margin-bottom: 0.2rem;
-}
-
-.bubbleAi p {
-  margin: 0 0 0.4rem 0;
-}
-
-.bubbleAi p:last-child {
-  margin-bottom: 0;
 }

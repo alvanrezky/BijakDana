@@ -171,9 +171,11 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
                 <div className={styles.rowAi}>
                   <div className={styles.avatarAi}>🤖</div>
                   <div className={styles.bubbleAi}>
-                    <span className={styles.typingDot}></span>
-                    <span className={styles.typingDot}></span>
-                    <span className={styles.typingDot}></span>
+                    <div className={styles.typingRow}>
+                      <span className={styles.typingDot}></span>
+                      <span className={styles.typingDot}></span>
+                      <span className={styles.typingDot}></span>
+                    </div>
                   </div>
                 </div>
               )}
