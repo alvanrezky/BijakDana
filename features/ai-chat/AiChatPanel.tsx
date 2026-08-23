@@ -2,7 +2,19 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { getBudget } from "@/lib/services/budget.service";
+import { getGoals } from "@/lib/services/goals.service";
+import { getProfile } from "@/lib/services/profile.service";
+import { getTransactions } from "@/lib/services/transactions.service";
 import styles from "./AiChatPanel.module.css";
+import ReactMarkdown from "react-markdown";
+const markdownComponents = {
+  h1: ({ children }: any) => <p style={{ fontWeight: 700, margin: "0.3rem 0" }}>{children}</p>,
+  h2: ({ children }: any) => <p style={{ fontWeight: 700, margin: "0.3rem 0" }}>{children}</p>,
+  h3: ({ children }: any) => <p style={{ fontWeight: 700, margin: "0.3rem 0" }}>{children}</p>,
+  h4: ({ children }: any) => <p style={{ fontWeight: 700, margin: "0.3rem 0" }}>{children}</p>,
+  p: ({ children }: any) => <p style={{ margin: "0 0 0.4rem 0" }}>{children}</p>,
+};
 
 type ChatMessage = {
   id: string;
@@ -15,6 +27,7 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [userFinance, setUserFinance] = useState<any>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,21 +40,82 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
     }
   }, [messages, typing]);
 
-  function handleSend() {
+  useEffect(() => {
+    if (!open) return;
+
+    async function fetchFinanceData() {
+      try {
+        const [budget, goals, profile, transactions] = await Promise.all([
+          getBudget(),
+          getGoals(),
+          getProfile(),
+          getTransactions(),
+        ]);
+
+        const currentMonth = new Date().toISOString().slice(0, 7);
+
+        const totalPengeluaranBulanIni = transactions
+          .filter((tx) => tx.type === "expense" && tx.date?.startsWith(currentMonth))
+          .reduce((sum, tx) => sum + tx.amount, 0);
+
+        const totalPemasukanBulanIni = transactions
+          .filter((tx) => tx.type === "income" && tx.date?.startsWith(currentMonth))
+          .reduce((sum, tx) => sum + tx.amount, 0);
+
+        setUserFinance({
+          profile,
+          budget,
+          goals,
+          totalPengeluaranBulanIni,
+          totalPemasukanBulanIni,
+          transaksiTerakhir: transactions.slice(0, 15),
+        });
+      } catch (err) {
+        console.error("Gagal ambil data finance untuk AI:", err);
+      }
+    }
+
+    fetchFinanceData();
+  }, [open]);
+
+  async function handleSend() {
     const text = input.trim();
     if (!text) return;
 
     const userMsg: ChatMessage = { id: Date.now().toString(), role: "user", text };
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInput("");
     setTyping(true);
 
-    setTimeout(() => {
-      const replies = [t("aichat_dummy_1"), t("aichat_dummy_2")];
-      const reply = replies[Math.floor(Math.random() * replies.length)];
-      setMessages((prev) => [...prev, { id: Date.now().toString() + "-ai", role: "ai", text: reply }]);
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages
+            .filter((m) => m.id !== "welcome")
+            .map((m) => ({
+              role: m.role === "ai" ? "assistant" : "user",
+              content: m.text,
+            })),
+          userFinance,
+        }),
+      });
+
+      const data = await res.json();
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now().toString() + "-ai", role: "ai", text: data.reply },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now().toString() + "-ai", role: "ai", text: "Maaf, terjadi kesalahan koneksi." },
+      ]);
+    } finally {
       setTyping(false);
-    }, 900);
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -83,7 +157,13 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
               {messages.map((m) => (
                 <div key={m.id} className={m.role === "user" ? styles.rowUser : styles.rowAi}>
                   {m.role === "ai" && <div className={styles.avatarAi}>🤖</div>}
-                  <div className={m.role === "user" ? styles.bubbleUser : styles.bubbleAi}>{m.text}</div>
+                  <div className={m.role === "user" ? styles.bubbleUser : styles.bubbleAi}>
+                    {m.role === "ai" ? (
+                      <ReactMarkdown components={markdownComponents}>{m.text}</ReactMarkdown>
+                    ) : (
+                      m.text
+                    )}
+                  </div>
                 </div>
               ))}
 
