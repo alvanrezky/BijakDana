@@ -6,6 +6,7 @@ import { getBudget } from "@/lib/services/budget.service";
 import { getGoals } from "@/lib/services/goals.service";
 import { getProfile } from "@/lib/services/profile.service";
 import { getTransactions } from "@/lib/services/transactions.service";
+import { calcEmergencyFund } from "@/lib/business/savings";
 import styles from "./AiChatPanel.module.css";
 import ReactMarkdown from "react-markdown";
 const markdownComponents = {
@@ -62,8 +63,21 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
           .filter((tx) => tx.type === "income" && tx.date?.startsWith(currentMonth))
           .reduce((sum, tx) => sum + tx.amount, 0);
 
+        // Hitung ulang dana darurat secara live (sama seperti di halaman Tabungan),
+        // supaya target & current yang dikirim ke AI selalu sesuai riwayat transaksi terbaru,
+        // bukan angka statis dari saat onboarding.
+        let profileForAi = profile;
+        if (profile) {
+          const emergencyFund = calcEmergencyFund(transactions, profile);
+          profileForAi = {
+            ...profile,
+            emergencyFundTarget: emergencyFund.target,
+            emergencyFundCurrent: emergencyFund.current,
+          };
+        }
+
         setUserFinance({
-          profile,
+          profile: profileForAi,
           budget,
           goals,
           totalPengeluaranBulanIni,
