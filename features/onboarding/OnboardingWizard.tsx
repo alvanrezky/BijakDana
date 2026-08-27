@@ -65,6 +65,7 @@ export default function OnboardingWizard({ onFinish }: { onFinish: () => void })
       incomeType,
       dependents,
       savingTarget,
+      savingsInitial: 0,
       emergencyFundCurrent,
       emergencyFundTarget: income * 6,
       onboarded: true,
