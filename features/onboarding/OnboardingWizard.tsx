@@ -69,6 +69,7 @@ export default function OnboardingWizard({ onFinish }: { onFinish: () => void })
       emergencyFundCurrent,
       emergencyFundTarget: income * 6,
       onboarded: true,
+      healthScoreNotifPref: "monthly",
     };
 
     const budget: Budget = {};

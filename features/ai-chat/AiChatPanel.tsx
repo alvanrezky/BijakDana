@@ -7,6 +7,7 @@ import { getGoals } from "@/lib/services/goals.service";
 import { getProfile } from "@/lib/services/profile.service";
 import { getTransactions } from "@/lib/services/transactions.service";
 import { calcEmergencyFund } from "@/lib/business/savings";
+import { calcHealthScore, weakestPillars } from "@/lib/business/healthScore";
 import { monthKey, monthLabel } from "@/lib/utils/format";
 import { Transaction } from "@/types/models";
 import styles from "./AiChatPanel.module.css";
@@ -101,6 +102,24 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
 
         const riwayatBulanan = buildMonthlyRecap(transactions, 12);
 
+        // Skor kesehatan finansial, dihitung dengan cara yang sama seperti di halaman Kesehatan,
+        // supaya AI bisa "konsultasi" soal skor ini pakai angka yang sama persis dengan yang user lihat.
+        let skorKesehatan = null;
+        if (profile) {
+          const healthResult = calcHealthScore(transactions, budget, profile, goals);
+          const weakest = weakestPillars(healthResult.pillars, 2);
+          skorKesehatan = {
+            overall: healthResult.overall,
+            label: healthResult.label,
+            pillars: healthResult.pillars.map((p) => ({
+              key: p.key,
+              score: p.score,
+              hasData: p.hasData,
+            })),
+            pilarTerlemah: weakest.map((p) => ({ key: p.key, score: p.score })),
+          };
+        }
+
         setUserFinance({
           profile: profileForAi,
           budget,
@@ -109,6 +128,7 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
           totalPemasukanBulanIni,
           transaksiTerakhir: transactions.slice(0, 15),
           riwayatBulanan,
+          skorKesehatan,
         });
       } catch (err) {
         console.error("Gagal ambil data finance untuk AI:", err);

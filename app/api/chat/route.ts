@@ -6,6 +6,20 @@ function formatRupiah(n: number) {
   return `Rp${(n || 0).toLocaleString("id-ID")}`;
 }
 
+const PILLAR_LABELS: Record<string, string> = {
+  savings: "Konsistensi Menabung",
+  budget: "Kepatuhan Budget",
+  emergency: "Dana Darurat",
+  stability: "Stabilitas Pengeluaran",
+  diversification: "Diversifikasi Simpanan",
+};
+
+const HEALTH_LABELS: Record<string, string> = {
+  sehat: "Sehat",
+  cukup: "Cukup",
+  perhatian: "Perlu Perhatian",
+};
+
 export async function POST(req: NextRequest) {
   const { messages, userFinance } = await req.json();
 
@@ -20,6 +34,7 @@ export async function POST(req: NextRequest) {
       totalPemasukanBulanIni,
       transaksiTerakhir,
       riwayatBulanan,
+      skorKesehatan,
     } = userFinance;
 
     dataText = `
@@ -59,6 +74,23 @@ ${
     .join("\n") || "Belum ada riwayat bulanan."
 }
 
+SKOR KESEHATAN FINANSIAL:
+${
+  skorKesehatan
+    ? `- Skor keseluruhan: ${skorKesehatan.overall}/100 (kategori: ${HEALTH_LABELS[skorKesehatan.label] ?? skorKesehatan.label})
+- Rincian per pilar:
+${skorKesehatan.pillars
+  .map(
+    (p: any) =>
+      `  • ${PILLAR_LABELS[p.key] ?? p.key}: ${p.score}/100${p.hasData ? "" : " (data belum cukup)"}`
+  )
+  .join("\n")}
+- Pilar yang paling perlu diperbaiki: ${skorKesehatan.pilarTerlemah
+        .map((p: any) => `${PILLAR_LABELS[p.key] ?? p.key} (${p.score}/100)`)
+        .join(", ")}`
+    : "Skor kesehatan finansial belum tersedia."
+}
+
 TRANSAKSI TERAKHIR:
 ${
   (transaksiTerakhir || [])
@@ -83,6 +115,7 @@ ATURAN FORMAT:
 - Langsung jawab inti pertanyaan pengguna secara natural, maksimal 4-6 kalimat
 - Berikan saran yang spesifik berdasarkan data berikut. Jangan mengarang angka yang tidak ada di data.
 - Jika pengguna bertanya soal bulan atau periode tertentu (misal "bulan lalu", "3 bulan terakhir", nama bulan tertentu), gunakan data di bagian RIWAYAT PEMASUKAN & PENGELUARAN PER BULAN untuk menjawab, bukan hanya RINGKASAN BULAN INI.
+- Jika pengguna bertanya soal skor kesehatan finansial (misal "gimana skor kesehatan saya", "kenapa skor saya rendah", "apa yang perlu diperbaiki"), gunakan data di bagian SKOR KESEHATAN FINANSIAL. Jelaskan dengan bahasa yang mudah dipahami, fokus ke pilar yang paling lemah, dan beri saran konkret untuk memperbaikinya berdasarkan data transaksi/budget yang ada.
 
 ${dataText}`;
 

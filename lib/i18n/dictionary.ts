@@ -363,6 +363,88 @@ export const dictionary = {
   savings_initial_note_prefix: { id: "Termasuk saldo awal:", en: "Includes starting balance:" },
     grafik_nav_prev_week: { id: "Minggu sebelumnya", en: "Previous week" },
     grafik_nav_next_week: { id: "Minggu berikutnya", en: "Next week" },
+
+  nav_kesehatan: { id: "Kesehatan Keuangan", en: "Financial Health" },
+  nav_bottombar_kesehatan: { id: "Kesehatan", en: "Health" },
+
+  health_page_title: { id: "Kesehatan Keuangan", en: "Financial Health" },
+  health_page_sub: {
+    id: "Skor ini dihitung dari data transaksi, budget, dan tabungan kamu — bukan nasihat finansial personal, cuma gambaran umum berbasis pola pemakaian aplikasi.",
+    en: "This score is calculated from your transaction, budget, and savings data — not personal financial advice, just a general picture based on app usage patterns.",
+  },
+  health_label_sehat: { id: "Sehat", en: "Healthy" },
+  health_label_cukup: { id: "Cukup", en: "Fair" },
+  health_label_perhatian: { id: "Perlu Perhatian", en: "Needs Attention" },
+
+  health_gauge_title: { id: "Skor Keseluruhan", en: "Overall Score" },
+  health_gauge_sub: { id: "Gabungan 5 pilar keuangan kamu", en: "Combined score of your 5 financial pillars" },
+  health_trend_title: { id: "Tren 6 Bulan Terakhir", en: "Last 6 Months Trend" },
+  health_trend_sub: { id: "Perubahan skor dari bulan ke bulan", en: "Score changes month over month" },
+
+  health_pillars_title: { id: "Rincian per Pilar", en: "Pillar Breakdown" },
+  health_pillars_sub: { id: "Klik salah satu untuk lihat detailnya", en: "Click any pillar to see the details" },
+  pillar_savings: { id: "Rasio Menabung", en: "Savings Ratio" },
+  pillar_budget: { id: "Kepatuhan Anggaran", en: "Budget Compliance" },
+  pillar_emergency: { id: "Kesiapan Dana Darurat", en: "Emergency Fund Readiness" },
+  pillar_stability: { id: "Stabilitas Pengeluaran", en: "Expense Stability" },
+  pillar_diversification: { id: "Alokasi Tabungan", en: "Savings Allocation" },
+
+  health_ef_link_title: { id: "Progress Dana Darurat", en: "Emergency Fund Progress" },
+  health_ef_link_sub: { id: "Terhubung langsung dari halaman Tabungan", en: "Linked directly from the Savings page" },
+  health_ef_link_cta: { id: "Buka halaman Tabungan", en: "Open Savings page" },
+
+  health_whatif_title: { id: "Simulasi \"Bagaimana Jika\"", en: "\"What If\" Simulator" },
+  health_whatif_sub: { id: "Coba lihat dampaknya kalau rasio menabung berubah", en: "See the impact if your savings ratio changes" },
+  whatif_slider_label: { id: "Ubah skor Rasio Menabung sebesar", en: "Change Savings Ratio score by" },
+  whatif_current_score: { id: "Skor sekarang", en: "Current score" },
+  whatif_simulated_score: { id: "Skor simulasi", en: "Simulated score" },
+  whatif_disclaimer: { id: "*Ini cuma simulasi, tidak mengubah data asli kamu.", en: "*This is just a simulation, it doesn't change your actual data." },
+
+  health_rec_title: { id: "Rekomendasi Aksi", en: "Recommended Actions" },
+  health_rec_sub: { id: "Berdasarkan pilar yang paling perlu diperbaiki", en: "Based on your weakest pillars" },
+  rec_health_empty: { id: "Belum ada rekomendasi — data kamu masih terlalu sedikit untuk dianalisis.", en: "No recommendations yet — not enough data to analyze." },
+  rec_health_savings: { id: "Coba naikkan jumlah yang ditransfer ke Tabungan Biasa atau Dana Darurat tiap bulan, walau sedikit demi sedikit.", en: "Try increasing the amount transferred to Regular Savings or Emergency Fund each month, even little by little." },
+  rec_health_savings_impact: { id: "Berpotensi menaikkan skor keseluruhan hingga 25 poin", en: "Could raise your overall score by up to 25 points" },
+  rec_health_budget: { id: "Cek kategori yang sering melebihi budget di halaman Tabel Keuangan, dan sesuaikan batasnya atau kurangi pengeluarannya.", en: "Check which categories often exceed budget in the Finance Table page, and adjust the limit or reduce spending." },
+  rec_health_budget_impact: { id: "Berpotensi menaikkan skor keseluruhan hingga 20 poin", en: "Could raise your overall score by up to 20 points" },
+  rec_health_emergency: { id: "Prioritaskan transfer rutin ke Dana Darurat sampai mencapai target 6× pengeluaran bulanan.", en: "Prioritize regular transfers to Emergency Fund until reaching the 6× monthly expense target." },
+  rec_health_emergency_impact: { id: "Berpotensi menaikkan skor keseluruhan hingga 25 poin", en: "Could raise your overall score by up to 25 points" },
+  rec_health_stability: { id: "Pengeluaran kamu naik-turun cukup drastis tiap bulan. Coba identifikasi pengeluaran musiman/tak terduga dan siapkan dananya dari awal.", en: "Your spending fluctuates quite a bit month to month. Try identifying seasonal/unexpected expenses and plan for them ahead of time." },
+  rec_health_stability_impact: { id: "Berpotensi menaikkan skor keseluruhan hingga 15 poin", en: "Could raise your overall score by up to 15 points" },
+  rec_health_diversification: { id: "Coba mulai gunakan lebih dari 1 \"kantong\" tabungan (Dana Darurat, Tabungan Biasa, atau Target khusus) supaya dana kamu tidak menumpuk di satu tempat saja.", en: "Try using more than 1 savings \"bucket\" (Emergency Fund, Regular Savings, or a custom Goal) so your funds aren't all in one place." },
+  rec_health_diversification_impact: { id: "Berpotensi menaikkan skor keseluruhan hingga 15 poin", en: "Could raise your overall score by up to 15 points" },
+
+  health_achv_title: { id: "Pencapaian", en: "Achievements" },
+  health_achv_sub: { id: "Milestone yang sudah kamu raih", en: "Milestones you've reached" },
+  achv_score_sehat: { id: "Skor \"Sehat\" pertama", en: "First \"Healthy\" score" },
+  achv_ef_50: { id: "Dana darurat 50%", en: "Emergency fund 50%" },
+  achv_ef_100: { id: "Dana darurat tercapai", en: "Emergency fund reached" },
+  achv_budget_full: { id: "Sebulan penuh sesuai budget", en: "A full month on budget" },
+  achv_goal_achieved: { id: "Target tabungan tercapai", en: "Savings goal reached" },
+  achv_first_goal: { id: "Target tabungan pertama", en: "First savings goal" },
+
+  health_notifpref_title: { id: "Notifikasi Skor", en: "Score Notifications" },
+  health_notifpref_sub: { id: "Atur kapan kamu ingin diberi tahu", en: "Set when you want to be notified" },
+  notifpref_monthly: { id: "Setiap bulan", en: "Every month" },
+  notifpref_on_drop: { id: "Hanya saat skor turun signifikan", en: "Only when score drops significantly" },
+  notifpref_off: { id: "Nonaktif", en: "Off" },
+
+  peer_comparison_title: { id: "Perbandingan dengan Pengguna Lain", en: "Comparison with Other Users" },
+  peer_comparison_desc: {
+    id: "Fitur ini belum tersedia — butuh data agregat dari banyak pengguna dulu untuk bisa dibandingkan secara adil dan tetap menjaga privasi data kamu.",
+    en: "This feature isn't available yet — it needs aggregate data from many users first, to compare fairly while still protecting your data privacy.",
+  },
+
+  health_methodology_note: {
+    id: "Catatan metodologi: skor ini dihitung otomatis dari data transaksi & tabungan di aplikasi, bukan analisis keuangan profesional. Pilar \"Alokasi Tabungan\" mengukur seberapa banyak kantong tabungan yang kamu pakai aktif di aplikasi ini, bukan analisis portofolio investasi sungguhan.",
+    en: "Methodology note: this score is calculated automatically from your app's transaction & savings data, not a professional financial analysis. The \"Savings Allocation\" pillar measures how many savings buckets you actively use in this app, not a real investment portfolio analysis.",
+  },
+
+  drilldown_sub_this_month: { id: "Bulan berjalan", en: "Current month" },
+  drilldown_budget_empty: { id: "Belum ada budget kategori yang diatur.", en: "No category budget set yet." },
+  drilldown_savings_income: { id: "Pemasukan bulan ini", en: "Income this month" },
+  drilldown_savings_saved: { id: "Ditransfer ke tabungan/dana darurat", en: "Transferred to savings/emergency fund" },
+  drilldown_generic_hint: { id: "Detail lebih lanjut bisa dilihat di halaman Grafik & Analisis.", en: "More details are available on the Charts & Analysis page." },
 } as const;
 
 export type DictKey = keyof typeof dictionary;

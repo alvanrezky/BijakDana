@@ -24,6 +24,7 @@ export type Profile = {
   emergencyFundCurrent: number;
   emergencyFundTarget: number;
   onboarded: boolean;
+  healthScoreNotifPref: "monthly" | "on_drop" | "off";
 };
 export type Category = {
   id: string;

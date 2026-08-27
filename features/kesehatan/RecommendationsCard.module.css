@@ -1,0 +1,35 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 10px;
+}
+.icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.body {
+  flex: 1;
+}
+.text {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.impact {
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 600;
+}
+.empty {
+  font-size: 12.5px;
+  color: var(--text2);
+  padding: 8px 0;
+}

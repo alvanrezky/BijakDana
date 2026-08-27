@@ -19,6 +19,8 @@ const menuItems = [
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> },
   { key: "riwayat", labelKey: "nav_riwayat" as const, bottomLabelKey: "nav_bottombar_riwayat" as const, path: "/riwayat",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> },
+  { key: "kesehatan", labelKey: "nav_kesehatan" as const, bottomLabelKey: "nav_bottombar_kesehatan" as const, path: "/kesehatan",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> },
 ];
 
 export default function Sidebar() {
