@@ -11,12 +11,14 @@ export default function TabelTable({
   byCategory,
   onEdit,
   onDelete,
+  sortOrder,
 }: {
   transactions: Transaction[];
   budget: Budget;
   byCategory: Record<string, number>;
   onEdit: (tx: Transaction) => void;
   onDelete: (tx: Transaction) => void;
+  sortOrder: "newest" | "oldest";
 }) {
   const { t, lang } = useLanguage();
 
@@ -28,8 +30,16 @@ export default function TabelTable({
     );
   }
 
-  const sorted = transactions.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  // Saldo berjalan HARUS dihitung kronologis (lama -> baru), terlepas dari urutan tampilan.
+  const ascending = transactions.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   let running = 0;
+  const rows = ascending.map((tx) => {
+    if (tx.type === "income") running += tx.amount;
+    else running -= tx.amount;
+    return { tx, balance: running };
+  });
+
+  const displayRows = sortOrder === "newest" ? rows.slice().reverse() : rows;
 
   return (
     <div className={styles.wrap}>
@@ -47,11 +57,8 @@ export default function TabelTable({
           </tr>
         </thead>
         <tbody>
-          {sorted.map((tx) => {
+          {displayRows.map(({ tx, balance }) => {
             const isIncome = tx.type === "income";
-            if (isIncome) running += tx.amount;
-            else running -= tx.amount;
-
             const cat = findCategory(tx.cat, tx.type);
             const catLabel = getCategoryLabel(cat, lang);
             const catSpent = byCategory[tx.cat] || 0;
@@ -77,8 +84,8 @@ export default function TabelTable({
                     {isOver ? t("tabel_status_over") : t("tabel_status_actual")}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: running >= 0 ? "var(--green-d)" : "var(--red)" }}>
-                  {formatRupiah(running)}
+                <td style={{ fontWeight: 600, color: balance >= 0 ? "var(--green-d)" : "var(--red)" }}>
+                  {formatRupiah(balance)}
                 </td>
                 <td>
                   <div style={{ display: "flex", gap: 4 }}>

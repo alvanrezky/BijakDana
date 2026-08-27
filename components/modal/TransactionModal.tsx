@@ -16,6 +16,7 @@ export default function TransactionModal({
   presetCat,
   presetGoalId,
   presetGoalLabel,
+  presetType,
 }: {
   open: boolean;
   onClose: () => void;
@@ -24,6 +25,7 @@ export default function TransactionModal({
   presetCat?: string;
   presetGoalId?: string;
   presetGoalLabel?: string;
+  presetType?: TxType;
 }) {
   const { t, lang } = useLanguage();
   const [type, setType] = useState<TxType>("expense");
@@ -33,6 +35,8 @@ export default function TransactionModal({
   const [method, setMethod] = useState("GoPay");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [saving, setSaving] = useState(false);
+
+  const locked = !editTx && !!presetType;
 
   useEffect(() => {
     if (!open) return;
@@ -44,14 +48,14 @@ export default function TransactionModal({
       setMethod(editTx.method);
       setDate(editTx.date);
     } else {
-      setType("expense");
+      setType(presetType || "expense");
       setCat(presetGoalId ? "tabungan" : presetCat || "makan");
       setAmountText("");
       setDesc("");
       setMethod("GoPay");
       setDate(new Date().toISOString().split("T")[0]);
     }
-  }, [open, editTx, presetCat, presetGoalId]);
+  }, [open, editTx, presetCat, presetGoalId, presetType]);
 
   const categories = type === "expense" ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
 
@@ -89,7 +93,31 @@ export default function TransactionModal({
     onClose();
   }
 
-  const goalLocked = !editTx && !!presetGoalId;
+  function getModalTitle(): string {
+    if (editTx) return t("txmodal_title_edit");
+    if (locked) {
+      const targetLabel = presetGoalLabel
+        ? presetGoalLabel
+        : presetCat === "danadrt"
+        ? t("jar_emergency_title")
+        : t("jar_savings_title");
+      const prefix = presetType === "income" ? t("txmodal_title_withdraw") : t("txmodal_title_transfer");
+      return `${prefix} ${targetLabel}`;
+    }
+    return t("txmodal_title_new");
+  }
+
+  function getLockedIcon(): string {
+    if (presetGoalId) return "🎯";
+    if (presetCat === "danadrt") return "🛡️";
+    return "🏦";
+  }
+
+  function getLockedLabel(): string {
+    if (presetGoalLabel) return presetGoalLabel;
+    if (presetCat === "danadrt") return t("jar_emergency_title");
+    return t("jar_savings_title");
+  }
 
   return (
     <AnimatePresence>
@@ -108,9 +136,9 @@ export default function TransactionModal({
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            <div className={styles.title}>{editTx ? t("txmodal_title_edit") : t("txmodal_title_new")}</div>
+            <div className={styles.title}>{getModalTitle()}</div>
 
-            {!goalLocked && (
+            {!locked && (
               <div className={styles.typeTabs}>
                 <button
                   className={type === "expense" ? styles.typeActiveExpense : styles.typeBtn}
@@ -138,21 +166,21 @@ export default function TransactionModal({
               <input value={amountText} onChange={(e) => handleAmountChange(e.target.value)} placeholder="Rp 0" />
             </div>
 
-            {goalLocked ? (
+            {locked ? (
               <div className={styles.field}>
                 <label>{t("txmodal_category_label")}</label>
                 <div
                   style={{
-                    border: "1.5px solid var(--green)",
-                    background: "var(--green-lt)",
+                    border: `1.5px solid ${presetType === "income" ? "var(--red)" : "var(--green)"}`,
+                    background: presetType === "income" ? "var(--red-lt)" : "var(--green-lt)",
                     borderRadius: 10,
                     padding: "10px 14px",
                     fontSize: 13,
-                    color: "var(--green-d)",
+                    color: presetType === "income" ? "var(--red)" : "var(--green-d)",
                     fontWeight: 600,
                   }}
                 >
-                  🎯 {presetGoalLabel}
+                  {getLockedIcon()} {getLockedLabel()}
                 </div>
               </div>
             ) : (

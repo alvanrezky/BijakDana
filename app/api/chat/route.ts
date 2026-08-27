@@ -12,8 +12,15 @@ export async function POST(req: NextRequest) {
   let dataText = "Data keuangan pengguna belum tersedia.";
 
   if (userFinance) {
-    const { profile, budget, goals, totalPengeluaranBulanIni, totalPemasukanBulanIni, transaksiTerakhir } =
-      userFinance;
+    const {
+      profile,
+      budget,
+      goals,
+      totalPengeluaranBulanIni,
+      totalPemasukanBulanIni,
+      transaksiTerakhir,
+      riwayatBulanan,
+    } = userFinance;
 
     dataText = `
 PROFIL PENGGUNA:
@@ -40,6 +47,18 @@ RINGKASAN BULAN INI:
 - Total pemasukan: ${formatRupiah(totalPemasukanBulanIni)}
 - Total pengeluaran: ${formatRupiah(totalPengeluaranBulanIni)}
 
+RIWAYAT PEMASUKAN & PENGELUARAN PER BULAN (dari yang terlama ke terbaru):
+${
+  (riwayatBulanan || [])
+    .map(
+      (m: any) =>
+        `- ${m.label}: pemasukan ${formatRupiah(m.pemasukan)}, pengeluaran ${formatRupiah(
+          m.pengeluaran
+        )}, selisih ${formatRupiah(m.selisih)}`
+    )
+    .join("\n") || "Belum ada riwayat bulanan."
+}
+
 TRANSAKSI TERAKHIR:
 ${
   (transaksiTerakhir || [])
@@ -63,6 +82,7 @@ ATURAN FORMAT:
 - Jangan menampilkan ulang seluruh data pengguna dalam bentuk tabel/daftar panjang kecuali diminta secara spesifik
 - Langsung jawab inti pertanyaan pengguna secara natural, maksimal 4-6 kalimat
 - Berikan saran yang spesifik berdasarkan data berikut. Jangan mengarang angka yang tidak ada di data.
+- Jika pengguna bertanya soal bulan atau periode tertentu (misal "bulan lalu", "3 bulan terakhir", nama bulan tertentu), gunakan data di bagian RIWAYAT PEMASUKAN & PENGELUARAN PER BULAN untuk menjawab, bukan hanya RINGKASAN BULAN INI.
 
 ${dataText}`;
 

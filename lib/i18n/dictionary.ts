@@ -1,7 +1,6 @@
 export type Lang = "id" | "en";
 
 export const dictionary = {
-  // ===== Sidebar & navigasi =====
   nav_menu: { id: "Menu", en: "Menu" },
   nav_account: { id: "Akun", en: "Account" },
   nav_beranda: { id: "Beranda", en: "Home" },
@@ -27,10 +26,7 @@ export const dictionary = {
 
   plan_active: { id: "Paket Tahunan · Aktif", en: "Annual Plan · Active" },
 
-  topbar_notif_soon: {
-    id: "Fitur notifikasi lengkap segera hadir.",
-    en: "Full notification feature coming soon.",
-  },
+  topbar_notif_soon: { id: "Fitur notifikasi lengkap segera hadir.", en: "Full notification feature coming soon." },
 
   btn_save: { id: "Simpan", en: "Save" },
   btn_saving: { id: "Menyimpan...", en: "Saving..." },
@@ -64,10 +60,7 @@ export const dictionary = {
   beranda_menu_question: { id: "Apa yang ingin kamu lihat?", en: "What would you like to view?" },
   beranda_recent_tx: { id: "Transaksi terbaru", en: "Recent transactions" },
   beranda_see_all: { id: "Lihat semua →", en: "See all →" },
-  beranda_no_tx: {
-    id: "Belum ada transaksi. Tekan tombol + untuk mulai mencatat.",
-    en: "No transactions yet. Tap the + button to start tracking.",
-  },
+  beranda_no_tx: { id: "Belum ada transaksi. Tekan tombol + untuk mulai mencatat.", en: "No transactions yet. Tap the + button to start tracking." },
   beranda_balance_label: { id: "Sisa saldo bulan ini", en: "Remaining balance this month" },
   beranda_balance_updated: { id: "Diperbarui otomatis", en: "Auto-updated" },
   beranda_pill_income: { id: "Masuk", en: "In" },
@@ -110,10 +103,7 @@ export const dictionary = {
   tabel_th_balance: { id: "Saldo", en: "Balance" },
   tabel_status_over: { id: "Over", en: "Over" },
   tabel_status_actual: { id: "Aktual", en: "Actual" },
-  tabel_confirm_delete: {
-    id: "Hapus transaksi \"{desc}\" sebesar {amount}? Tindakan ini tidak bisa dibatalkan.",
-    en: "Delete transaction \"{desc}\" of {amount}? This cannot be undone.",
-  },
+  tabel_confirm_delete: { id: "Hapus transaksi \"{desc}\" sebesar {amount}? Tindakan ini tidak bisa dibatalkan.", en: "Delete transaction \"{desc}\" of {amount}? This cannot be undone." },
 
   grafik_page_title: { id: "Grafik & Analisis", en: "Charts & Analysis" },
   grafik_tab_month: { id: "Bulan ini", en: "This month" },
@@ -144,37 +134,26 @@ export const dictionary = {
   jar_emergency_title: { id: "Dana Darurat", en: "Emergency Fund" },
   jar_savings_title: { id: "Tabungan Biasa", en: "Regular Savings" },
   jar_transfer_btn: { id: "+ Transfer", en: "+ Transfer" },
+  jar_withdraw_btn: { id: "− Gunakan", en: "− Use" },
   jar_collected: { id: "Terkumpul:", en: "Collected:" },
   jar_target: { id: "Target:", en: "Target:" },
   jar_recorded: { id: "Tercatat:", en: "Recorded:" },
-  jar_target_per_month: { id: "Target:", en: "Target:" },
-  jar_per_month_suffix: { id: "/bln", en: "/mo" },
-  jar_this_month: { id: "Bulan ini:", en: "This month:" },
-  jar_savings_sub: { id: "Target bulanan tabungan umum", en: "Monthly regular savings target" },
+  jar_balance_label: { id: "Saldo saat ini", en: "Current balance" },
+  jar_savings_sub: { id: "Saldo tabungan kamu, naik saat transfer & turun saat digunakan", en: "Your savings balance, grows on transfer & shrinks when used" },
   ef_basis_income: { id: "Dihitung dari 6× pemasukan bulanan (histori transaksi < 3 bulan)", en: "Calculated from 6× monthly income (transaction history < 3 months)" },
   ef_basis_expense: { id: "Dihitung dari 6× rata-rata pengeluaran bulanan (6 bulan terakhir)", en: "Calculated from 6× average monthly expenses (last 6 months)" },
   ef_achieved: { id: "Target dana darurat sudah tercapai! 🎉", en: "Emergency fund target reached! 🎉" },
   ef_projection_prefix: { id: "💡 Jika nabung", en: "💡 If you save" },
   ef_projection_middle: { id: "/bln, tercapai dalam", en: "/mo, you'll reach it in" },
   ef_projection_suffix: { id: "bulan", en: "months" },
-  savings_set_target: { id: "💡 Set target tabungan di pengaturan profil.", en: "💡 Set your savings target in profile settings." },
-  savings_achieved: { id: "💡 Target bulan ini tercapai! 🎉", en: "💡 This month's target reached! 🎉" },
-  savings_remaining_prefix: { id: "💡 Kurang", en: "💡 Need" },
-  savings_remaining_suffix: { id: "lagi dari target bulan ini.", en: "more to reach this month's target." },
   perbandingan_title: { id: "📊 Perbandingan Instrumen", en: "📊 Instrument Comparison" },
-  perbandingan_sub: {
-    id: "Proyeksi nilai simpanan bulanan di berbagai instrumen — arahkan kursor ke grafik untuk detail",
-    en: "Projected value of monthly savings across instruments — hover the chart for details",
-  },
+  perbandingan_sub: { id: "Proyeksi nilai simpanan bulanan di berbagai instrumen — arahkan kursor ke grafik untuk detail", en: "Projected value of monthly savings across instruments — hover the chart for details" },
   perbandingan_field_label: { id: "Nominal alokasi per bulan", en: "Monthly allocation amount" },
   perbandingan_tooltip_horizon: { id: "Horizon", en: "Horizon" },
   perbandingan_tooltip_years: { id: "tahun", en: "years" },
   perbandingan_per_year: { id: "%/thn", en: "%/yr" },
   perbandingan_legend_years_suffix: { id: "/ 15 thn", en: "/ 15 yrs" },
-  perbandingan_disclaimer: {
-    id: "* Proyeksi indikatif berdasarkan rata-rata return historis, sudah memperhitungkan biaya admin/pajak jika ada. Return sesungguhnya tidak dijamin dan bisa berbeda.",
-    en: "* Indicative projection based on average historical returns, already accounting for admin fees/taxes where applicable. Actual returns are not guaranteed and may differ.",
-  },
+  perbandingan_disclaimer: { id: "* Proyeksi indikatif berdasarkan rata-rata return historis, sudah memperhitungkan biaya admin/pajak jika ada. Return sesungguhnya tidak dijamin dan bisa berbeda.", en: "* Indicative projection based on average historical returns, already accounting for admin fees/taxes where applicable. Actual returns are not guaranteed and may differ." },
   instrument_tabungan_label: { id: "Tabungan Biasa", en: "Regular Savings" },
   instrument_tabungan_desc: { id: "Bunga tabungan bank umum sekitar 0,5–1%/tahun, dipotong biaya admin bulanan.", en: "Regular bank savings interest is around 0.5–1%/year, minus a monthly admin fee." },
   instrument_deposito_label: { id: "Deposito", en: "Time Deposit" },
@@ -225,41 +204,20 @@ export const dictionary = {
   edu_status_notready_suffix: { id: "dari target. Prioritaskan mengisi dana darurat dulu di instrumen likuid & rendah risiko sebelum masuk ke saham/ETF.", en: "of target. Prioritize filling your emergency fund first with liquid & low-risk instruments before entering stocks/ETFs." },
   edu_section_risk_title: { id: "Berdasarkan Risiko", en: "By Risk Level" },
   edu_risk_low_title: { id: "🟢 Risiko rendah", en: "🟢 Low risk" },
-  edu_risk_low_desc: {
-    id: "Cocok untuk dana yang bisa dibutuhkan sewaktu-waktu: dana darurat, dana pendidikan <2 tahun, atau DP rumah/kendaraan. Pilihan instrumen: tabungan, reksa dana pasar uang, deposito jangka pendek.",
-    en: "Good for money that might be needed anytime: emergency fund, education fund <2 years, or a house/car down payment. Instrument options: savings, money market funds, short-term deposits.",
-  },
+  edu_risk_low_desc: { id: "Cocok untuk dana yang bisa dibutuhkan sewaktu-waktu: dana darurat, dana pendidikan <2 tahun, atau DP rumah/kendaraan. Pilihan instrumen: tabungan, reksa dana pasar uang, deposito jangka pendek.", en: "Good for money that might be needed anytime: emergency fund, education fund <2 years, or a house/car down payment. Instrument options: savings, money market funds, short-term deposits." },
   edu_risk_high_title: { id: "🔴 Risiko tinggi", en: "🔴 High risk" },
-  edu_risk_high_desc: {
-    id: "Cocok untuk dana yang tidak dipakai minimal 5 tahun ke depan, dan dana darurat kamu sudah aman. Pilihan instrumen: saham, ETF, sebagian emas.",
-    en: "Good for money not needed for at least 5 years, once your emergency fund is safe. Instrument options: stocks, ETFs, some gold.",
-  },
+  edu_risk_high_desc: { id: "Cocok untuk dana yang tidak dipakai minimal 5 tahun ke depan, dan dana darurat kamu sudah aman. Pilihan instrumen: saham, ETF, sebagian emas.", en: "Good for money not needed for at least 5 years, once your emergency fund is safe. Instrument options: stocks, ETFs, some gold." },
   edu_section_horizon_title: { id: "Berdasarkan Jangka Waktu", en: "By Time Horizon" },
   edu_horizon_short_title: { id: "Pendek (<3 tahun)", en: "Short (<3 years)" },
-  edu_horizon_short_desc: {
-    id: "Pakai instrumen stabil & likuid: tabungan, reksa dana pasar uang, deposito tenor pendek. Hindari saham/ETF, karena harganya bisa turun tepat saat kamu butuh dananya.",
-    en: "Use stable & liquid instruments: savings, money market funds, short-tenor deposits. Avoid stocks/ETFs — their price can drop right when you need the money.",
-  },
+  edu_horizon_short_desc: { id: "Pakai instrumen stabil & likuid: tabungan, reksa dana pasar uang, deposito tenor pendek. Hindari saham/ETF, karena harganya bisa turun tepat saat kamu butuh dananya.", en: "Use stable & liquid instruments: savings, money market funds, short-tenor deposits. Avoid stocks/ETFs — their price can drop right when you need the money." },
   edu_horizon_long_title: { id: "Panjang (5 tahun+)", en: "Long (5+ years)" },
-  edu_horizon_long_desc: {
-    id: "Horizon makin panjang, makin banyak ruang buat menahan naik-turun harga demi return yang lebih tinggi. Cocok untuk tujuan seperti dana pensiun.",
-    en: "The longer the horizon, the more room to ride out price swings for higher potential returns. Good for goals like retirement funds.",
-  },
+  edu_horizon_long_desc: { id: "Horizon makin panjang, makin banyak ruang buat menahan naik-turun harga demi return yang lebih tinggi. Cocok untuk tujuan seperti dana pensiun.", en: "The longer the horizon, the more room to ride out price swings for higher potential returns. Good for goals like retirement funds." },
   edu_section_economy_title: { id: "Berdasarkan Kondisi Ekonomi", en: "By Economic Conditions" },
   edu_economy_rate_down_title: { id: "Suku bunga turun/stabil", en: "Interest rates falling/stable" },
-  edu_economy_rate_down_desc: {
-    id: "Saham dan reksa dana saham relatif lebih menarik saat harga pasar belum terlalu mahal.",
-    en: "Stocks and equity mutual funds are relatively more attractive when market prices aren't too high.",
-  },
+  edu_economy_rate_down_desc: { id: "Saham dan reksa dana saham relatif lebih menarik saat harga pasar belum terlalu mahal.", en: "Stocks and equity mutual funds are relatively more attractive when market prices aren't too high." },
   edu_economy_rate_high_title: { id: "Suku bunga tinggi/ekonomi tidak pasti", en: "High interest rates/uncertain economy" },
-  edu_economy_rate_high_desc: {
-    id: "Instrumen pendapatan tetap seperti deposito dan reksa dana pasar uang cenderung lebih aman.",
-    en: "Fixed-income instruments like deposits and money market funds tend to be safer.",
-  },
-  edu_footnote: {
-    id: "Data acuan return dan suku bunga diambil dari publikasi umum (LPS, laporan reksa dana, historis IHSG) per pertengahan 2026, dan hanya bersifat edukatif — bukan rekomendasi personal.",
-    en: "Reference return and interest rate data is taken from public sources (LPS, mutual fund reports, IHSG history) as of mid-2026, for educational purposes only — not personal advice.",
-  },
+  edu_economy_rate_high_desc: { id: "Instrumen pendapatan tetap seperti deposito dan reksa dana pasar uang cenderung lebih aman.", en: "Fixed-income instruments like deposits and money market funds tend to be safer." },
+  edu_footnote: { id: "Data acuan return dan suku bunga diambil dari publikasi umum (LPS, laporan reksa dana, historis IHSG) per pertengahan 2026, dan hanya bersifat edukatif — bukan rekomendasi personal.", en: "Reference return and interest rate data is taken from public sources (LPS, mutual fund reports, IHSG history) as of mid-2026, for educational purposes only — not personal advice." },
 
   riwayat_page_title: { id: "Riwayat Transaksi", en: "Transaction History" },
   riwayat_stat_income: { id: "Total masuk", en: "Total in" },
@@ -275,10 +233,10 @@ export const dictionary = {
   riwayat_badge_income: { id: "Pemasukan", en: "Income" },
   riwayat_badge_over: { id: "Over budget", en: "Over budget" },
   riwayat_badge_ok: { id: "On budget", en: "On budget" },
-  riwayat_confirm_delete: {
-    id: "Hapus transaksi \"{desc}\" sebesar {amount}? Tindakan ini tidak bisa dibatalkan.",
-    en: "Delete transaction \"{desc}\" of {amount}? This cannot be undone.",
-  },
+  riwayat_confirm_delete: { id: "Hapus transaksi \"{desc}\" sebesar {amount}? Tindakan ini tidak bisa dibatalkan.", en: "Delete transaction \"{desc}\" of {amount}? This cannot be undone." },
+
+  sort_newest: { id: "Terbaru", en: "Newest" },
+  sort_oldest: { id: "Terlama", en: "Oldest" },
 
   profil_page_title: { id: "Profil & Akun", en: "Profile & Account" },
   profil_subscription_label: { id: "Langganan aktif", en: "Active subscription" },
@@ -290,14 +248,13 @@ export const dictionary = {
   profil_menu_income: { id: "Update pemasukan bulanan", en: "Update monthly income" },
   profil_menu_logout: { id: "Keluar akun", en: "Log out" },
   profil_menu_reset: { id: "Reset semua data", en: "Reset all data" },
-  profil_reset_confirm: {
-    id: "Semua transaksi, budget, dan data keuangan akan dihapus permanen. Nama & akun kamu tetap ada, kamu bisa mulai catat ulang dari nol. Lanjutkan?",
-    en: "All transactions, budgets, and financial data will be permanently deleted. Your name & account stay intact — you can start tracking fresh. Continue?",
-  },
+  profil_reset_confirm: { id: "Semua transaksi, budget, dan data keuangan akan dihapus permanen. Nama & akun kamu tetap ada, kamu bisa mulai catat ulang dari nol. Lanjutkan?", en: "All transactions, budgets, and financial data will be permanently deleted. Your name & account stay intact — you can start tracking fresh. Continue?" },
   profil_resetting: { id: "Menghapus data...", en: "Deleting data..." },
 
   txmodal_title_edit: { id: "Edit Transaksi", en: "Edit Transaction" },
   txmodal_title_new: { id: "Catat Transaksi", en: "Add Transaction" },
+  txmodal_title_transfer: { id: "Transfer ke", en: "Transfer to" },
+  txmodal_title_withdraw: { id: "Gunakan dari", en: "Use from" },
   txmodal_tab_expense: { id: "Pengeluaran", en: "Expense" },
   txmodal_tab_income: { id: "Pemasukan", en: "Income" },
   txmodal_amount_label: { id: "Nominal", en: "Amount" },
@@ -326,18 +283,9 @@ export const dictionary = {
 
   aichat_title: { id: "Konsultasi AI", en: "AI Consultation" },
   aichat_subtitle: { id: "Asisten keuangan pribadi BijakDana", en: "BijakDana personal finance assistant" },
-  aichat_welcome: {
-    id: "Halo! Aku asisten keuangan BijakDana 👋 Coba tanya sesuatu, misalnya \"gimana progress dana daruratku?\"",
-    en: "Hi! I'm your BijakDana finance assistant 👋 Try asking something like \"how's my emergency fund progress?\"",
-  },
-  aichat_dummy_1: {
-    id: "Fitur konsultasi AI masih dalam tahap pengembangan. Nantinya aku bisa bantu analisis pengeluaran, progress dana darurat, dan strategi investasi kamu langsung di sini 🚀",
-    en: "The AI consultation feature is still in development. Soon I'll be able to help analyze your spending, emergency fund progress, and investment strategy right here 🚀",
-  },
-  aichat_dummy_2: {
-    id: "Ini masih tampilan prototipe ya — jawaban di atas belum dari AI sungguhan, tapi begini nanti alur chat-nya bakal terasa.",
-    en: "This is still a prototype view — the reply above isn't from real AI yet, but this is roughly how the chat flow will feel.",
-  },
+  aichat_welcome: { id: "Halo! Aku asisten keuangan BijakDana 👋 Coba tanya sesuatu, misalnya \"gimana progress dana daruratku?\"", en: "Hi! I'm your BijakDana finance assistant 👋 Try asking something like \"how's my emergency fund progress?\"" },
+  aichat_dummy_1: { id: "Fitur konsultasi AI masih dalam tahap pengembangan. Nantinya aku bisa bantu analisis pengeluaran, progress dana darurat, dan strategi investasi kamu langsung di sini 🚀", en: "The AI consultation feature is still in development. Soon I'll be able to help analyze your spending, emergency fund progress, and investment strategy right here 🚀" },
+  aichat_dummy_2: { id: "Ini masih tampilan prototipe ya — jawaban di atas belum dari AI sungguhan, tapi begini nanti alur chat-nya bakal terasa.", en: "This is still a prototype view — the reply above isn't from real AI yet, but this is roughly how the chat flow will feel." },
   aichat_input_placeholder: { id: "Tulis pertanyaanmu...", en: "Type your question..." },
 
   onb_step0_title: { id: "👋 Selamat datang di BijakDana!", en: "👋 Welcome to BijakDana!" },
@@ -375,10 +323,7 @@ export const dictionary = {
 
   notif_title: { id: "Notifikasi", en: "Notifications" },
   notif_empty_title: { id: "Belum ada notifikasi", en: "No notifications yet" },
-  notif_empty_desc: {
-    id: "Kalau ada pengingat budget, transaksi, atau update penting, akan muncul di sini.",
-    en: "Budget reminders, transaction alerts, and important updates will show up here.",
-  },
+  notif_empty_desc: { id: "Kalau ada pengingat budget, transaksi, atau update penting, akan muncul di sini.", en: "Budget reminders, transaction alerts, and important updates will show up here." },
 
   sub_modal_title: { id: "Pilih Paket Langganan", en: "Choose a Subscription Plan" },
   sub_modal_sub: { id: "Upgrade untuk fitur lengkap BijakDana", en: "Upgrade for the full BijakDana experience" },
@@ -393,12 +338,10 @@ export const dictionary = {
   plan_best_value: { id: "Paling hemat", en: "Best value" },
   sub_modal_choose_prefix: { id: "Pilih Paket", en: "Choose" },
   sub_modal_soon: { id: "Fitur pembayaran segera hadir!", en: "Payment feature coming soon!" },
+
   goals_section_title: { id: "🎯 Target Tabungan Lainnya", en: "🎯 Other Savings Goals" },
   goals_add_btn: { id: "+ Tambah Target", en: "+ Add Goal" },
-  goals_empty: {
-    id: "Belum ada target tabungan lain. Tambahkan target untuk tujuan spesifik seperti liburan, gadget, atau dana pendidikan.",
-    en: "No other savings goals yet. Add a goal for something specific like a trip, gadget, or education fund.",
-  },
+  goals_empty: { id: "Belum ada target tabungan lain. Tambahkan target untuk tujuan spesifik seperti liburan, gadget, atau dana pendidikan.", en: "No other savings goals yet. Add a goal for something specific like a trip, gadget, or education fund." },
   goal_modal_title_new: { id: "Buat Target Tabungan", en: "Create Savings Goal" },
   goal_modal_title_edit: { id: "Edit Target Tabungan", en: "Edit Savings Goal" },
   goal_name_label: { id: "Untuk apa target ini?", en: "What's this goal for?" },
@@ -408,16 +351,18 @@ export const dictionary = {
   goal_duration_unit_month: { id: "Bulan", en: "Months" },
   goal_duration_unit_year: { id: "Tahun", en: "Years" },
   goal_save_btn: { id: "Simpan Target", en: "Save Goal" },
-  goal_delete_confirm: {
-    id: "Hapus target \"{name}\"? Transaksi yang sudah masuk tidak ikut terhapus.",
-    en: "Delete goal \"{name}\"? Related transactions won't be deleted.",
-  },
+  goal_delete_confirm: { id: "Hapus target \"{name}\"? Transaksi yang sudah masuk tidak ikut terhapus.", en: "Delete goal \"{name}\"? Related transactions won't be deleted." },
   goal_achieved: { id: "Target tercapai! 🎉", en: "Goal reached! 🎉" },
   goal_months_left: { id: "{n} bulan lagi", en: "{n} months left" },
-  goal_overdue: {
-    id: "Target waktu sudah lewat, tapi belum tercapai. Yuk lanjut nabung!",
-    en: "Target time has passed, but the goal isn't reached yet. Keep saving!",
-  },
+  goal_overdue: { id: "Target waktu sudah lewat, tapi belum tercapai. Yuk lanjut nabung!", en: "Target time has passed, but the goal isn't reached yet. Keep saving!" },
+
+  savings_initial_edit_btn: { id: "Atur saldo awal", en: "Set starting balance" },
+  savings_initial_modal_title: { id: "Saldo Tabungan Sebelumnya", en: "Previous Savings Balance" },
+  savings_initial_modal_sub: { id: "Kalau kamu udah punya tabungan sebelum pakai BijakDana, masukkan nominalnya di sini. Ini akan ditambahkan ke saldo tabungan biasa kamu.", en: "If you already had savings before using BijakDana, enter the amount here. It'll be added to your regular savings balance." },
+  savings_initial_amount_label: { id: "Nominal tabungan sebelumnya (Rp)", en: "Previous savings amount (Rp)" },
+  savings_initial_note_prefix: { id: "Termasuk saldo awal:", en: "Includes starting balance:" },
+    grafik_nav_prev_week: { id: "Minggu sebelumnya", en: "Previous week" },
+    grafik_nav_next_week: { id: "Minggu berikutnya", en: "Next week" },
 } as const;
 
 export type DictKey = keyof typeof dictionary;

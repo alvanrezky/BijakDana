@@ -10,9 +10,14 @@ export interface GoalProgress {
 }
 
 export function calcGoalProgress(goal: SavingsGoal, transactions: Transaction[]): GoalProgress {
-  const current = transactions
+  const depositedIn = transactions
     .filter((t) => t.type === "expense" && t.goalId === goal.id)
     .reduce((s, t) => s + t.amount, 0);
+  const withdrawnOut = transactions
+    .filter((t) => t.type === "income" && t.goalId === goal.id)
+    .reduce((s, t) => s + t.amount, 0);
+
+  const current = Math.max(0, depositedIn - withdrawnOut);
 
   const created = new Date(goal.createdAt);
   const now = new Date();

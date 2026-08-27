@@ -6,16 +6,19 @@ import TabunganPerbandingan from "@/features/tabungan/TabunganPerbandingan";
 import TabunganEdukasi from "@/features/tabungan/TabunganEdukasi";
 import TransactionModal from "@/components/modal/TransactionModal";
 import { getTransactions } from "@/lib/services/transactions.service";
-import { getProfile } from "@/lib/services/profile.service";
+import { getProfile, saveProfile } from "@/lib/services/profile.service";
 import { getGoals } from "@/lib/services/goals.service";
-import { calcEmergencyFund } from "@/lib/business/savings";
+import { calcEmergencyFund, calcRegularSavingsBalance } from "@/lib/business/savings";
 import { monthKey } from "@/lib/utils/format";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
-import { Transaction, Profile, SavingsGoal } from "@/types/models";
+import { Transaction, Profile, SavingsGoal, TxType } from "@/types/models";
 
-type TransferTarget =
-  | { kind: "cat"; cat: string }
-  | { kind: "goal"; goalId: string; goalLabel: string };
+interface TransferTarget {
+  cat?: string;
+  goalId?: string;
+  goalLabel?: string;
+  direction: TxType;
+}
 
 export default function TabunganPage() {
   const { t } = useLanguage();
@@ -50,20 +53,23 @@ export default function TabunganPage() {
   }
 
   const emergencyFund = calcEmergencyFund(transactions, profile);
+  const regularSavingsBalance = calcRegularSavingsBalance(transactions, profile);
 
   const now = new Date();
   const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-  const savingsTx = transactions.filter((t) => t.type === "expense" && t.cat === "tabungan" && !t.goalId);
-  const savingsTotal = savingsTx.reduce((s, t) => s + t.amount, 0);
-  const savingsThisMonth = savingsTx
-    .filter((t) => monthKey(t.date) === currentMonthKey)
+  const savingsThisMonth = transactions
+    .filter((t) => t.type === "expense" && t.cat === "tabungan" && !t.goalId && monthKey(t.date) === currentMonthKey)
     .reduce((s, t) => s + t.amount, 0);
-
   const savingTarget = profile.savingTarget || 0;
   const savingsPct = savingTarget > 0 ? Math.min(100, Math.round((savingsThisMonth / savingTarget) * 100)) : 0;
 
-  function openTransferModal(target: TransferTarget) {
-    setTransferTarget(target);
+  function openTransfer(target: { cat?: string; goalId?: string; goalLabel?: string }) {
+    setTransferTarget({ ...target, direction: "expense" });
+    setModalOpen(true);
+  }
+
+  function openWithdraw(target: { cat?: string; goalId?: string; goalLabel?: string }) {
+    setTransferTarget({ ...target, direction: "income" });
     setModalOpen(true);
   }
 
@@ -72,9 +78,10 @@ export default function TabunganPage() {
     setTransferTarget(null);
   }
 
-  const presetCat = transferTarget?.kind === "cat" ? transferTarget.cat : undefined;
-  const presetGoalId = transferTarget?.kind === "goal" ? transferTarget.goalId : undefined;
-  const presetGoalLabel = transferTarget?.kind === "goal" ? transferTarget.goalLabel : undefined;
+  async function handleProfileSaved(updated: Profile) {
+    await saveProfile(updated);
+    await loadAll();
+  }
 
   return (
     <>
@@ -84,15 +91,14 @@ export default function TabunganPage() {
 
         <TabunganSavingsGrid
           emergencyFund={emergencyFund}
+          regularSavingsBalance={regularSavingsBalance}
           profile={profile}
-          savingsThisMonth={savingsThisMonth}
-          savingsTotal={savingsTotal}
           goals={goals}
           transactions={transactions}
-          onTransferDanaDarurat={() => openTransferModal({ kind: "cat", cat: "danadrt" })}
-          onTransferTabungan={() => openTransferModal({ kind: "cat", cat: "tabungan" })}
-          onTransferGoal={(goal) => openTransferModal({ kind: "goal", goalId: goal.id, goalLabel: goal.name })}
+          onTransfer={openTransfer}
+          onWithdraw={openWithdraw}
           onGoalsChanged={loadAll}
+          onProfileSaved={handleProfileSaved}
         />
 
         <TabunganPerbandingan defaultMonthly={profile.savingTarget || 0} />
@@ -101,14 +107,15 @@ export default function TabunganPage() {
       </main>
 
       <TransactionModal
-        key={presetGoalId || presetCat || "default"}
+        key={`${transferTarget?.goalId || transferTarget?.cat || "default"}-${transferTarget?.direction || "expense"}`}
         open={modalOpen}
         onClose={handleModalClose}
         onSaved={loadAll}
         editTx={null}
-        presetCat={presetCat}
-        presetGoalId={presetGoalId}
-        presetGoalLabel={presetGoalLabel}
+        presetCat={transferTarget?.cat}
+        presetGoalId={transferTarget?.goalId}
+        presetGoalLabel={transferTarget?.goalLabel}
+        presetType={transferTarget?.direction}
       />
     </>
   );

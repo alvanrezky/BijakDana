@@ -25,12 +25,17 @@ export const INCOME_CATEGORIES: Category[] = [
 ];
 
 export function findCategory(id: string, type: "income" | "expense"): Category {
+  // Cari di gabungan kedua daftar dulu (ID unik di semua kategori), supaya transaksi
+  // "Gunakan dari tabungan/dana darurat" (type income, cat tabungan/danadrt) tetap
+  // dapat ikon & label yang benar, bukan fallback ke "Lainnya".
+  const combined = [...EXPENSE_CATEGORIES, ...INCOME_CATEGORIES];
+  const found = combined.find((c) => c.id === id);
+  if (found) return found;
+
   const list = type === "income" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
-  return list.find((c) => c.id === id) || list[list.length - 1];
+  return list[list.length - 1];
 }
 
-// Label bahasa Inggris — dipetakan lewat id kategori, terpisah dari data utama
-// supaya id/warna/icon tetap satu sumber kebenaran (Category.label tetap Indonesia sebagai default/fallback).
 const CATEGORY_LABELS_EN: Record<string, string> = {
   makan: "Food & Drinks",
   transport: "Transportation",

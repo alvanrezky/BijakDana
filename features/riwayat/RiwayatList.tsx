@@ -18,12 +18,14 @@ export default function RiwayatList({
   byCategory,
   onEdit,
   onDelete,
+  sortOrder,
 }: {
   transactions: Transaction[];
   budget: Budget;
   byCategory: Record<string, number>;
   onEdit: (tx: Transaction) => void;
   onDelete: (tx: Transaction) => void;
+  sortOrder: "newest" | "oldest";
 }) {
   const { t, lang } = useLanguage();
 
@@ -47,7 +49,9 @@ export default function RiwayatList({
     (groups[t.date] = groups[t.date] || []).push(t);
   });
 
-  const groupEntries = Object.entries(groups).sort((a, b) => b[0].localeCompare(a[0]));
+  const groupEntries = Object.entries(groups).sort((a, b) =>
+    sortOrder === "newest" ? b[0].localeCompare(a[0]) : a[0].localeCompare(b[0])
+  );
 
   return (
     <div>

@@ -45,10 +45,16 @@ export function calcEmergencyFund(transactions: Transaction[], profile: Profile)
     target = avg * 6;
   }
 
-  const transferredIn = transactions
+  // Deposit (Transfer): transaksi expense dengan cat "danadrt" -> nambah saldo dana darurat.
+  // Withdraw (Gunakan): transaksi income dengan cat "danadrt" -> ngurangin saldo dana darurat.
+  const depositedIn = transactions
     .filter((t) => t.type === "expense" && t.cat === "danadrt")
     .reduce((s, t) => s + t.amount, 0);
-  const current = (profile.emergencyFundCurrent || 0) + transferredIn;
+  const withdrawnOut = transactions
+    .filter((t) => t.type === "income" && t.cat === "danadrt")
+    .reduce((s, t) => s + t.amount, 0);
+
+  const current = Math.max(0, (profile.emergencyFundCurrent || 0) + depositedIn - withdrawnOut);
 
   const pct = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
   const remaining = Math.max(0, target - current);
@@ -57,6 +63,22 @@ export function calcEmergencyFund(transactions: Transaction[], profile: Profile)
     current >= target ? 0 : monthlySavingNeeded > 0 ? Math.ceil(remaining / monthlySavingNeeded) : null;
 
   return { target, current, pct, basis, monthlySavingNeeded, monthsToTarget };
+}
+
+/**
+ * Tabungan Biasa TIDAK punya target — ini cuma saldo berjalan.
+ * Naik kalau ada "Transfer" (expense, cat=tabungan, tanpa goalId).
+ * Turun kalau ada "Gunakan" (income, cat=tabungan, tanpa goalId).
+ */
+export function calcRegularSavingsBalance(transactions: Transaction[], profile: Profile): number {
+  const depositedIn = transactions
+    .filter((t) => t.type === "expense" && t.cat === "tabungan" && !t.goalId)
+    .reduce((s, t) => s + t.amount, 0);
+  const withdrawnOut = transactions
+    .filter((t) => t.type === "income" && t.cat === "tabungan" && !t.goalId)
+    .reduce((s, t) => s + t.amount, 0);
+
+  return Math.max(0, (profile.savingsInitial || 0) + depositedIn - withdrawnOut);
 }
 
 export interface InstrumentProjectionPoint {

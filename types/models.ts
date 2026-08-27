@@ -20,6 +20,7 @@ export type Profile = {
   incomeType: string;
   dependents: string;
   savingTarget: number;
+  savingsInitial: number;
   emergencyFundCurrent: number;
   emergencyFundTarget: number;
   onboarded: boolean;

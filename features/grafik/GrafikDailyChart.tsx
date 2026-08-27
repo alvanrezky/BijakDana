@@ -4,11 +4,19 @@ import Chart from "chart.js/auto";
 import { Transaction } from "@/types/models";
 import { Period } from "./GrafikPeriodTabs";
 import { getDailySpendingInMonth, getDailySpendingInWeek, getHourlySpendingToday } from "@/lib/business/ChartData";
-import { currentMonthKey, formatRupiah } from "@/lib/utils/format";
+import { formatRupiah } from "@/lib/utils/format";
 import { useTheme } from "@/lib/theme/ThemeContext";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
-export default function GrafikDailyChart({ transactions, period }: { transactions: Transaction[]; period: Period }) {
+export default function GrafikDailyChart({
+  transactions,
+  period,
+  referenceDate,
+}: {
+  transactions: Transaction[];
+  period: Period;
+  referenceDate: Date;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const chartRef = useRef<Chart | null>(null);
   const { mode } = useTheme();
@@ -18,16 +26,18 @@ export default function GrafikDailyChart({ transactions, period }: { transaction
   const gridColor = mode === "dark" ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)";
   const emptyBarColor = mode === "dark" ? "#2A2E37" : "#e5e7eb";
 
+  const refMonthKey = `${referenceDate.getFullYear()}-${String(referenceDate.getMonth() + 1).padStart(2, "0")}`;
+
   const { labels, values, subtitle } = (() => {
     if (period === "bulan") {
-      const r = getDailySpendingInMonth(transactions, currentMonthKey());
+      const r = getDailySpendingInMonth(transactions, refMonthKey);
       return { ...r, subtitle: t("grafik_daily_sub_month") };
     }
     if (period === "minggu") {
-      const r = getDailySpendingInWeek(transactions);
+      const r = getDailySpendingInWeek(transactions, referenceDate);
       return { ...r, subtitle: t("grafik_daily_sub_week") };
     }
-    const r = getHourlySpendingToday(transactions);
+    const r = getHourlySpendingToday(transactions, referenceDate);
     return { ...r, subtitle: t("grafik_daily_sub_day") };
   })();
 

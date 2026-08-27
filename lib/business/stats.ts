@@ -1,5 +1,5 @@
 import { Transaction } from "@/types/models";
-import { monthKey, currentMonthKey } from "@/lib/utils/format";
+import { monthKey } from "@/lib/utils/format";
 
 export type PeriodStats = {
   income: number;
@@ -8,18 +8,24 @@ export type PeriodStats = {
   byCategory: Record<string, number>;
 };
 
-export function calcStats(transactions: Transaction[], period: "hari" | "minggu" | "bulan"): PeriodStats {
-  const now = new Date();
-
+export function calcStats(
+  transactions: Transaction[],
+  period: "hari" | "minggu" | "bulan",
+  referenceDate: Date = new Date()
+): PeriodStats {
   const filtered = transactions.filter((t) => {
     const d = new Date(t.date);
-    if (period === "hari") return d.toDateString() === now.toDateString();
+    if (period === "hari") return d.toDateString() === referenceDate.toDateString();
     if (period === "minggu") {
-      const start = new Date(now);
-      start.setDate(start.getDate() - start.getDay());
-      return d >= start;
+      const start = new Date(referenceDate);
+      start.setDate(referenceDate.getDate() - referenceDate.getDay());
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 7);
+      return d >= start && d < end;
     }
-    return monthKey(t.date) === currentMonthKey();
+    const refMonthKey = `${referenceDate.getFullYear()}-${String(referenceDate.getMonth() + 1).padStart(2, "0")}`;
+    return monthKey(t.date) === refMonthKey;
   });
 
   const income = filtered.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);

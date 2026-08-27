@@ -10,6 +10,8 @@ export default function RiwayatToolbar({
   monthFilter,
   onMonthFilterChange,
   availableMonths,
+  sortOrder,
+  onSortOrderChange,
 }: {
   search: string;
   onSearchChange: (v: string) => void;
@@ -18,6 +20,8 @@ export default function RiwayatToolbar({
   monthFilter: string;
   onMonthFilterChange: (v: string) => void;
   availableMonths: { key: string; label: string }[];
+  sortOrder: "newest" | "oldest";
+  onSortOrderChange: (v: "newest" | "oldest") => void;
 }) {
   const { t } = useLanguage();
 
@@ -43,6 +47,34 @@ export default function RiwayatToolbar({
           </option>
         ))}
       </select>
+      <div style={{ display: "flex", border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden", flexShrink: 0 }}>
+        <button
+          onClick={() => onSortOrderChange("newest")}
+          className={styles.fbtn}
+          style={{
+            border: "none",
+            borderRadius: 0,
+            background: sortOrder === "newest" ? "var(--green)" : "var(--card)",
+            color: sortOrder === "newest" ? "#fff" : "var(--text2)",
+            fontWeight: sortOrder === "newest" ? 700 : 400,
+          }}
+        >
+          {t("sort_newest")}
+        </button>
+        <button
+          onClick={() => onSortOrderChange("oldest")}
+          className={styles.fbtn}
+          style={{
+            border: "none",
+            borderRadius: 0,
+            background: sortOrder === "oldest" ? "var(--green)" : "var(--card)",
+            color: sortOrder === "oldest" ? "#fff" : "var(--text2)",
+            fontWeight: sortOrder === "oldest" ? 700 : 400,
+          }}
+        >
+          {t("sort_oldest")}
+        </button>
+      </div>
     </div>
   );
 }

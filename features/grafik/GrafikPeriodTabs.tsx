@@ -19,7 +19,7 @@ export default function GrafikPeriodTabs({
   ];
 
   return (
-    <div style={{ display: "flex", gap: 6, marginBottom: 16 }}>
+    <div style={{ display: "flex", gap: 6 }}>
       {tabs.map((tab) => (
         <button
           key={tab.key}

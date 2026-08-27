@@ -27,6 +27,7 @@ export default function TabelPage() {
 
   const [editTx, setEditTx] = useState<Transaction | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   async function loadAll() {
     const [tx, bud] = await Promise.all([getTransactions(), getBudget()]);
@@ -132,6 +133,8 @@ export default function TabelPage() {
           monthFilter={monthFilter}
           onMonthFilterChange={setMonthFilter}
           availableMonths={availableMonths}
+          sortOrder={sortOrder}
+          onSortOrderChange={setSortOrder}
         />
 
         <TabelTable
@@ -140,6 +143,7 @@ export default function TabelPage() {
           byCategory={stats.byCategory}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          sortOrder={sortOrder}
         />
       </main>
 

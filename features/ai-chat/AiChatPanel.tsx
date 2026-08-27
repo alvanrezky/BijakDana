@@ -7,6 +7,8 @@ import { getGoals } from "@/lib/services/goals.service";
 import { getProfile } from "@/lib/services/profile.service";
 import { getTransactions } from "@/lib/services/transactions.service";
 import { calcEmergencyFund } from "@/lib/business/savings";
+import { monthKey, monthLabel } from "@/lib/utils/format";
+import { Transaction } from "@/types/models";
 import styles from "./AiChatPanel.module.css";
 import ReactMarkdown from "react-markdown";
 const markdownComponents = {
@@ -22,6 +24,30 @@ type ChatMessage = {
   role: "user" | "ai";
   text: string;
 };
+
+// Rekap pemasukan & pengeluaran per bulan, agar AI bisa jawab pertanyaan
+// soal periode/bulan tertentu (bukan cuma bulan berjalan).
+function buildMonthlyRecap(transactions: Transaction[], monthsBack = 12) {
+  const byMonth: Record<string, { income: number; expense: number }> = {};
+
+  transactions.forEach((t) => {
+    const key = monthKey(t.date);
+    if (!byMonth[key]) byMonth[key] = { income: 0, expense: 0 };
+    if (t.type === "income") byMonth[key].income += t.amount;
+    else byMonth[key].expense += t.amount;
+  });
+
+  const sortedKeys = Object.keys(byMonth).sort();
+  const lastKeys = sortedKeys.slice(-monthsBack);
+
+  return lastKeys.map((key) => ({
+    monthKey: key,
+    label: monthLabel(key),
+    pemasukan: byMonth[key].income,
+    pengeluaran: byMonth[key].expense,
+    selisih: byMonth[key].income - byMonth[key].expense,
+  }));
+}
 
 export default function AiChatPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useLanguage();
@@ -63,9 +89,6 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
           .filter((tx) => tx.type === "income" && tx.date?.startsWith(currentMonth))
           .reduce((sum, tx) => sum + tx.amount, 0);
 
-        // Hitung ulang dana darurat secara live (sama seperti di halaman Tabungan),
-        // supaya target & current yang dikirim ke AI selalu sesuai riwayat transaksi terbaru,
-        // bukan angka statis dari saat onboarding.
         let profileForAi = profile;
         if (profile) {
           const emergencyFund = calcEmergencyFund(transactions, profile);
@@ -76,6 +99,8 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
           };
         }
 
+        const riwayatBulanan = buildMonthlyRecap(transactions, 12);
+
         setUserFinance({
           profile: profileForAi,
           budget,
@@ -83,6 +108,7 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
           totalPengeluaranBulanIni,
           totalPemasukanBulanIni,
           transaksiTerakhir: transactions.slice(0, 15),
+          riwayatBulanan,
         });
       } catch (err) {
         console.error("Gagal ambil data finance untuk AI:", err);

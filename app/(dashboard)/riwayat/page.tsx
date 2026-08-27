@@ -30,6 +30,7 @@ export default function RiwayatPage() {
 
   const [editTx, setEditTx] = useState<Transaction | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   async function loadAll() {
     const [tx, bud] = await Promise.all([getTransactions(), getBudget()]);
@@ -116,6 +117,8 @@ export default function RiwayatPage() {
           monthFilter={monthFilter}
           onMonthFilterChange={setMonthFilter}
           availableMonths={availableMonths}
+          sortOrder={sortOrder}
+          onSortOrderChange={setSortOrder}
         />
 
         <RiwayatList
@@ -124,6 +127,7 @@ export default function RiwayatPage() {
           byCategory={stats.byCategory}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          sortOrder={sortOrder}
         />
       </main>
 
