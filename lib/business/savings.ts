@@ -1,52 +1,19 @@
 import { Transaction, Profile } from "@/types/models";
-import { monthKey } from "@/lib/utils/format";
 import { INSTRUMENTS, Instrument, InstrumentId } from "@/lib/constants/instruments";
 import { DictKey } from "@/lib/i18n/dictionary";
-
-const EXCLUDED_FROM_EXPENSE_AVG = ["danadrt", "tabungan"];
 
 export interface EmergencyFundResult {
   target: number;
   current: number;
   pct: number;
-  basis: "income" | "expense";
   monthlySavingNeeded: number;
   monthsToTarget: number | null;
 }
 
 export function calcEmergencyFund(transactions: Transaction[], profile: Profile): EmergencyFundResult {
-  const expenseTx = transactions.filter((t) => t.type === "expense");
-  const dates = expenseTx.map((t) => new Date(t.date).getTime());
-  const firstTxDate = dates.length ? new Date(Math.min(...dates)) : null;
+  // Target selalu 6x pemasukan bulanan — stabil, tidak terpengaruh naik-turunnya pengeluaran.
+  const target = (profile.income || 0) * 6;
 
-  let monthsOfHistory = 0;
-  if (firstTxDate) {
-    const now = new Date();
-    monthsOfHistory =
-      (now.getFullYear() - firstTxDate.getFullYear()) * 12 + (now.getMonth() - firstTxDate.getMonth());
-  }
-
-  let target: number;
-  let basis: "income" | "expense";
-
-  if (monthsOfHistory < 3) {
-    basis = "income";
-    target = (profile.income || 0) * 6;
-  } else {
-    basis = "expense";
-    const relevant = expenseTx.filter((t) => !EXCLUDED_FROM_EXPENSE_AVG.includes(t.cat));
-    const byMonth: Record<string, number> = {};
-    relevant.forEach((t) => {
-      const key = monthKey(t.date);
-      byMonth[key] = (byMonth[key] || 0) + t.amount;
-    });
-    const months = Object.keys(byMonth).slice(-6);
-    const avg = months.length ? months.reduce((s, m) => s + byMonth[m], 0) / months.length : 0;
-    target = avg * 6;
-  }
-
-  // Deposit (Transfer): transaksi expense dengan cat "danadrt" -> nambah saldo dana darurat.
-  // Withdraw (Gunakan): transaksi income dengan cat "danadrt" -> ngurangin saldo dana darurat.
   const depositedIn = transactions
     .filter((t) => t.type === "expense" && t.cat === "danadrt")
     .reduce((s, t) => s + t.amount, 0);
@@ -62,7 +29,7 @@ export function calcEmergencyFund(transactions: Transaction[], profile: Profile)
   const monthsToTarget =
     current >= target ? 0 : monthlySavingNeeded > 0 ? Math.ceil(remaining / monthlySavingNeeded) : null;
 
-  return { target, current, pct, basis, monthlySavingNeeded, monthsToTarget };
+  return { target, current, pct, monthlySavingNeeded, monthsToTarget };
 }
 
 /**

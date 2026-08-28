@@ -11,6 +11,8 @@ const META: Record<string, { icon: string; labelKey: DictKey }> = {
   budget_full: { icon: "📋", labelKey: "achv_budget_full" },
   goal_achieved: { icon: "🎯", labelKey: "achv_goal_achieved" },
   first_goal: { icon: "✨", labelKey: "achv_first_goal" },
+  stability_good: { icon: "📊", labelKey: "achv_stability_good" },
+  all_buckets_active: { icon: "🧩", labelKey: "achv_all_buckets_active" },
 };
 
 export default function AchievementsList({ achievements }: { achievements: Achievement[] }) {

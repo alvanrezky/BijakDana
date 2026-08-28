@@ -61,7 +61,7 @@ export default function TabunganSavingsGrid({
           </div>
         </div>
         <div className={styles.jtitle}>{t("jar_emergency_title")}</div>
-        <div className={styles.jsub}>{emergencyFund.basis === "income" ? t("ef_basis_income") : t("ef_basis_expense")}</div>
+        <div className={styles.jsub}>{t("ef_basis_income")}</div>
         <div className={styles.jpct}>{emergencyFund.pct}%</div>
         <div className={styles.pbar}>
           <div className={styles.pfill} style={{ width: `${emergencyFund.pct}%`, background: "#3B82F6" }} />

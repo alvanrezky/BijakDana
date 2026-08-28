@@ -141,7 +141,6 @@ export const dictionary = {
   jar_balance_label: { id: "Saldo saat ini", en: "Current balance" },
   jar_savings_sub: { id: "Saldo tabungan kamu, naik saat transfer & turun saat digunakan", en: "Your savings balance, grows on transfer & shrinks when used" },
   ef_basis_income: { id: "Dihitung dari 6× pemasukan bulanan (histori transaksi < 3 bulan)", en: "Calculated from 6× monthly income (transaction history < 3 months)" },
-  ef_basis_expense: { id: "Dihitung dari 6× rata-rata pengeluaran bulanan (6 bulan terakhir)", en: "Calculated from 6× average monthly expenses (last 6 months)" },
   ef_achieved: { id: "Target dana darurat sudah tercapai! 🎉", en: "Emergency fund target reached! 🎉" },
   ef_projection_prefix: { id: "💡 Jika nabung", en: "💡 If you save" },
   ef_projection_middle: { id: "/bln, tercapai dalam", en: "/mo, you'll reach it in" },
@@ -314,7 +313,7 @@ export const dictionary = {
   onb_ef_status_label: { id: "Sudah punya dana darurat?", en: "Already have an emergency fund?" },
   onb_ef_status_no: { id: "Belum punya", en: "Not yet" },
   onb_ef_status_partial: { id: "Sudah sebagian", en: "Partially" },
-  onb_ef_status_yes: { id: "Sudah cukup (6× pengeluaran)", en: "Fully funded (6× expenses)" },
+  onb_ef_status_yes: { id: "Sudah cukup (6× pemasukan)", en: "Fully funded (6× income)" },
   onb_ef_amount_label: { id: "Dana darurat yang sudah terkumpul (Rp)", en: "Emergency fund saved so far (Rp)" },
   onb_finish_btn: { id: "🚀 Mulai pakai BijakDana!", en: "🚀 Start using BijakDana!" },
   onb_name_alert: { id: "Masukkan nama kamu dulu!", en: "Please enter your name first!" },
@@ -431,8 +430,8 @@ export const dictionary = {
 
   peer_comparison_title: { id: "Perbandingan dengan Pengguna Lain", en: "Comparison with Other Users" },
   peer_comparison_desc: {
-    id: "Fitur ini belum tersedia — butuh data agregat dari banyak pengguna dulu untuk bisa dibandingkan secara adil dan tetap menjaga privasi data kamu.",
-    en: "This feature isn't available yet — it needs aggregate data from many users first, to compare fairly while still protecting your data privacy.",
+    id: "Fitur ini belum tersedia. Perbandingan yang adil butuh minimal puluhan pengguna aktif dengan profil serupa (usia, pemasukan) sebelum datanya bisa dianalisis tanpa membocorkan data personal siapa pun.",
+    en: "This feature isn't available yet. A fair comparison needs at least a few dozen active users with a similar profile (age, income) before the data can be analyzed without exposing anyone's personal data.",
   },
 
   health_methodology_note: {
@@ -445,6 +444,46 @@ export const dictionary = {
   drilldown_savings_income: { id: "Pemasukan bulan ini", en: "Income this month" },
   drilldown_savings_saved: { id: "Ditransfer ke tabungan/dana darurat", en: "Transferred to savings/emergency fund" },
   drilldown_generic_hint: { id: "Detail lebih lanjut bisa dilihat di halaman Grafik & Analisis.", en: "More details are available on the Charts & Analysis page." },
+    formula_savings: { id: "Skor = (nominal ditabung bulan ini ÷ pemasukan bulan ini) ÷ 20% target rasio, dikali 100, dibulatkan maksimal 100.", en: "Score = (amount saved this month ÷ this month's income) ÷ 20% target ratio, ×100, capped at 100." },
+  formula_budget: { id: "Skor = (jumlah kategori yang tidak melebihi budget ÷ total kategori yang punya budget) × 100.", en: "Score = (categories that stayed within budget ÷ total budgeted categories) × 100." },
+  formula_emergency_income: { id: "Target dihitung dari 6× pemasukan bulanan (histori transaksi kamu masih < 3 bulan, jadi belum bisa pakai rata-rata pengeluaran). Skor = (saldo saat ini ÷ target) × 100.", en: "Target is calculated from 6× monthly income (your transaction history is still < 3 months, so average expense can't be used yet). Score = (current balance ÷ target) × 100." },
+  formula_stability: { id: "Skor = 100 − (koefisien variasi pengeluaran 6 bulan terakhir × 100). Makin stabil pengeluaran bulanan, makin tinggi skornya.", en: "Score = 100 − (coefficient of variation of last 6 months' expenses × 100). The more stable your monthly spending, the higher the score." },
+  formula_diversification: { id: "Skor = jumlah kantong tabungan yang aktif dipakai (Dana Darurat, Tabungan Biasa, Target Custom) × 33, dibulatkan maksimal 100.", en: "Score = number of actively used savings buckets (Emergency Fund, Regular Savings, Custom Goals) × 33, capped at 100." },
+
+  metric_savings_income: { id: "Pemasukan bulan ini", en: "Income this month" },
+  metric_savings_saved: { id: "Ditabung bulan ini", en: "Saved this month" },
+  metric_savings_ratio: { id: "Rasio menabung", en: "Savings ratio" },
+  metric_budget_total_cats: { id: "Kategori yang punya budget", en: "Categories with a budget" },
+  metric_budget_compliant_cats: { id: "Kategori sesuai budget", en: "Categories within budget" },
+  metric_emergency_current: { id: "Saldo dana darurat saat ini", en: "Current emergency fund balance" },
+  metric_emergency_target: { id: "Target dana darurat", en: "Emergency fund target" },
+  metric_stability_months: { id: "Jumlah bulan data dianalisis", en: "Months of data analyzed" },
+  metric_stability_avg: { id: "Rata-rata pengeluaran/bulan", en: "Average expense/month" },
+  metric_stability_variation: { id: "Tingkat variasi (koefisien variasi)", en: "Variation level (coefficient of variation)" },
+  metric_diversification_active: { id: "Kantong tabungan aktif", en: "Active savings buckets" },
+
+  drilldown_contribution_label: { id: "Kontribusi ke skor total", en: "Contribution to total score" },
+  drilldown_formula_label: { id: "Cara menghitung", en: "How it's calculated" },
+  drilldown_no_data: { id: "Belum ada data", en: "No data yet" },
+  drilldown_no_data_desc: { id: "Belum cukup data untuk menghitung pilar ini bulan tersebut.", en: "Not enough data to calculate this pillar for that month." },
+  drilldown_detail_title: { id: "Rincian per kategori", en: "Detail by category" },
+
+  health_contribution_title: { id: "Rincian Kontribusi Skor", en: "Score Contribution Breakdown" },
+  health_contribution_sub: { id: "Berapa poin yang disumbang tiap pilar ke skor keseluruhan", en: "How many points each pillar contributes to the overall score" },
+  contribution_total_label: { id: "Total skor keseluruhan", en: "Total overall score" },
+
+  narrative_overall_prefix: { id: "Skor kesehatan keuangan kamu bulan ini", en: "Your financial health score this month is" },
+  narrative_up_prefix: { id: "naik", en: "up" },
+  narrative_down_prefix: { id: "turun", en: "down" },
+  narrative_points_suffix: { id: "poin", en: "points" },
+  narrative_flat: { id: "sama persis", en: "exactly the same" },
+  narrative_vs_last_month: { id: "dibanding bulan lalu", en: "compared to last month" },
+  narrative_no_previous: { id: "Belum ada data bulan sebelumnya untuk dibandingkan.", en: "No previous month data available for comparison yet." },
+  narrative_top_improved_prefix: { id: "Peningkatan terbesar ada di pilar", en: "The biggest improvement is in the" },
+  narrative_top_declined_prefix: { id: "Penurunan terbesar ada di pilar", en: "The biggest decline is in the" },
+
+  achv_stability_good: { id: "Pengeluaran stabil 6 bulan", en: "Stable spending for 6 months" },
+  achv_all_buckets_active: { id: "Semua kantong tabungan aktif", en: "All savings buckets active" },
 } as const;
 
 export type DictKey = keyof typeof dictionary;
