@@ -8,6 +8,25 @@ const VALID_EXPENSE_CATS = EXPENSE_CATEGORIES.map((c) => c.id);
 const VALID_INCOME_CATS = INCOME_CATEGORIES.map((c) => c.id);
 const VALID_METHODS = ["GoPay", "OVO", "DANA", "Transfer bank", "Cash", "Kartu debit", "Kartu kredit"];
 
+function normalizeCategory(raw: string, type: "income" | "expense"): string | null {
+  if (!raw || typeof raw !== "string") return null;
+  const needle = raw.trim().toLowerCase();
+  const list = type === "expense" ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
+
+  const byId = list.find((c) => c.id.toLowerCase() === needle);
+  if (byId) return byId.id;
+
+  const byLabel = list.find((c) => c.label.toLowerCase() === needle);
+  if (byLabel) return byLabel.id;
+
+  const byPartial = list.find(
+    (c) => c.label.toLowerCase().includes(needle) || needle.includes(c.id.toLowerCase())
+  );
+  if (byPartial) return byPartial.id;
+
+  return null;
+}
+
 const PILLAR_LABELS: Record<string, string> = {
   savings: "Konsistensi Menabung",
   budget: "Kepatuhan Budget",
@@ -67,9 +86,14 @@ function validateParsed(parsed: any): ParsedAiResponse | null {
     const type = t.type === "income" || t.type === "expense" ? t.type : null;
     const amount = typeof t.amount === "number" && isFinite(t.amount) && t.amount > 0 ? t.amount : null;
 
-    if (type && amount) {
-      const validCats = type === "expense" ? VALID_EXPENSE_CATS : VALID_INCOME_CATS;
-      const cat = validCats.includes(t.cat) ? t.cat : type === "expense" ? "lain" : "lain-in";
+        if (type && amount) {
+      const matchedCat = normalizeCategory(t.cat, type);
+      const cat = matchedCat ?? (type === "expense" ? "lain" : "lain-in");
+
+      if (!matchedCat) {
+        console.warn(`Kategori dari AI tidak match ("${t.cat}"), fallback ke "${cat}"`);
+      }
+
       const method = VALID_METHODS.includes(t.method) ? t.method : "Cash";
       const desc = typeof t.desc === "string" ? t.desc.trim().slice(0, 100) : "";
 
@@ -190,9 +214,22 @@ Kalau pengguna JELAS menyebutkan transaksi baru (ada nominal uang dan jenis pema
 
 Kalau pengguna hanya bertanya/konsultasi (bukan mencatat transaksi), field "transaksi" harus null.
 
-KATEGORI PENGELUARAN VALID (untuk transaksi type=expense): ${VALID_EXPENSE_CATS.join(", ")}
-KATEGORI PEMASUKAN VALID (untuk transaksi type=income): ${VALID_INCOME_CATS.join(", ")}
+KATEGORI PENGELUARAN VALID (format "id: Label", pakai id-nya di field cat):
+${EXPENSE_CATEGORIES.map((c) => `- ${c.id}: ${c.label}`).join("\n")}
+
+KATEGORI PEMASUKAN VALID (format "id: Label", pakai id-nya di field cat):
+${INCOME_CATEGORIES.map((c) => `- ${c.id}: ${c.label}`).join("\n")}
+
 METODE PEMBAYARAN VALID: ${VALID_METHODS.join(", ")}
+
+CONTOH PEMETAAN KATEGORI (ikuti pola ini untuk kasus serupa):
+- "print tugas", "beli buku kuliah", "bayar les/kursus" → cat: pendidikan
+- "beli kuota", "bayar wifi", "token listrik", "bayar PDAM" → cat: listrik
+- "jajan", "makan siang", "beli kopi", "delivery makanan" → cat: makan
+- "bensin", "parkir", "ojek online", "tol" → cat: transport
+- "nonton bioskop", "langganan streaming", "top up game" → cat: hiburan
+- "beli obat", "ke dokter", "vitamin" → cat: kesehatan
+Kalau kalimat pengguna benar-benar tidak cocok dengan kategori manapun di atas, baru gunakan "lain" (expense) atau "lain-in" (income).
 
 ATURAN LAIN:
 - Jangan mengarang angka yang tidak ada di data saat menjawab pertanyaan konsultasi.
