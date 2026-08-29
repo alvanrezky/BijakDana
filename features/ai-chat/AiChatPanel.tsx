@@ -5,10 +5,10 @@ import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { getBudget } from "@/lib/services/budget.service";
 import { getGoals } from "@/lib/services/goals.service";
 import { getProfile } from "@/lib/services/profile.service";
-import { getTransactions } from "@/lib/services/transactions.service";
+import { getTransactions, saveTransaction } from "@/lib/services/transactions.service";
 import { calcEmergencyFund } from "@/lib/business/savings";
 import { calcHealthScore, weakestPillars } from "@/lib/business/healthScore";
-import { monthKey, monthLabel } from "@/lib/utils/format";
+import { monthKey, monthLabel, formatRupiah } from "@/lib/utils/format";
 import { Transaction } from "@/types/models";
 import styles from "./AiChatPanel.module.css";
 import ReactMarkdown from "react-markdown";
@@ -26,8 +26,6 @@ type ChatMessage = {
   text: string;
 };
 
-// Rekap pemasukan & pengeluaran per bulan, agar AI bisa jawab pertanyaan
-// soal periode/bulan tertentu (bukan cuma bulan berjalan).
 function buildMonthlyRecap(transactions: Transaction[], monthsBack = 12) {
   const byMonth: Record<string, { income: number; expense: number }> = {};
 
@@ -68,73 +66,67 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
     }
   }, [messages, typing]);
 
+
+  async function fetchFinanceData() {
+    try {
+      const [budget, goals, profile, transactions] = await Promise.all([
+        getBudget(),
+        getGoals(),
+        getProfile(),
+        getTransactions(),
+      ]);
+
+      const currentMonth = new Date().toISOString().slice(0, 7);
+
+      const totalPengeluaranBulanIni = transactions
+        .filter((tx) => tx.type === "expense" && tx.date?.startsWith(currentMonth))
+        .reduce((sum, tx) => sum + tx.amount, 0);
+
+      const totalPemasukanBulanIni = transactions
+        .filter((tx) => tx.type === "income" && tx.date?.startsWith(currentMonth))
+        .reduce((sum, tx) => sum + tx.amount, 0);
+
+      let profileForAi = profile;
+      if (profile) {
+        const emergencyFund = calcEmergencyFund(transactions, profile);
+        profileForAi = {
+          ...profile,
+          emergencyFundTarget: emergencyFund.target,
+          emergencyFundCurrent: emergencyFund.current,
+        };
+      }
+
+      const riwayatBulanan = buildMonthlyRecap(transactions, 12);
+
+      let skorKesehatan = null;
+      if (profile) {
+        const healthResult = calcHealthScore(transactions, budget, profile, goals);
+        const weakest = weakestPillars(healthResult.pillars, 2);
+        skorKesehatan = {
+          overall: healthResult.overall,
+          label: healthResult.label,
+          pillars: healthResult.pillars.map((p) => ({ key: p.key, score: p.score, hasData: p.hasData })),
+          pilarTerlemah: weakest.map((p) => ({ key: p.key, score: p.score })),
+        };
+      }
+
+      setUserFinance({
+        profile: profileForAi,
+        budget,
+        goals,
+        totalPengeluaranBulanIni,
+        totalPemasukanBulanIni,
+        transaksiTerakhir: transactions.slice(0, 15),
+        riwayatBulanan,
+        skorKesehatan,
+      });
+    } catch (err) {
+      console.error("Gagal ambil data finance untuk AI:", err);
+    }
+  }
+
   useEffect(() => {
     if (!open) return;
-
-    async function fetchFinanceData() {
-      try {
-        const [budget, goals, profile, transactions] = await Promise.all([
-          getBudget(),
-          getGoals(),
-          getProfile(),
-          getTransactions(),
-        ]);
-
-        const currentMonth = new Date().toISOString().slice(0, 7);
-
-        const totalPengeluaranBulanIni = transactions
-          .filter((tx) => tx.type === "expense" && tx.date?.startsWith(currentMonth))
-          .reduce((sum, tx) => sum + tx.amount, 0);
-
-        const totalPemasukanBulanIni = transactions
-          .filter((tx) => tx.type === "income" && tx.date?.startsWith(currentMonth))
-          .reduce((sum, tx) => sum + tx.amount, 0);
-
-        let profileForAi = profile;
-        if (profile) {
-          const emergencyFund = calcEmergencyFund(transactions, profile);
-          profileForAi = {
-            ...profile,
-            emergencyFundTarget: emergencyFund.target,
-            emergencyFundCurrent: emergencyFund.current,
-          };
-        }
-
-        const riwayatBulanan = buildMonthlyRecap(transactions, 12);
-
-        // Skor kesehatan finansial, dihitung dengan cara yang sama seperti di halaman Kesehatan,
-        // supaya AI bisa "konsultasi" soal skor ini pakai angka yang sama persis dengan yang user lihat.
-        let skorKesehatan = null;
-        if (profile) {
-          const healthResult = calcHealthScore(transactions, budget, profile, goals);
-          const weakest = weakestPillars(healthResult.pillars, 2);
-          skorKesehatan = {
-            overall: healthResult.overall,
-            label: healthResult.label,
-            pillars: healthResult.pillars.map((p) => ({
-              key: p.key,
-              score: p.score,
-              hasData: p.hasData,
-            })),
-            pilarTerlemah: weakest.map((p) => ({ key: p.key, score: p.score })),
-          };
-        }
-
-        setUserFinance({
-          profile: profileForAi,
-          budget,
-          goals,
-          totalPengeluaranBulanIni,
-          totalPemasukanBulanIni,
-          transaksiTerakhir: transactions.slice(0, 15),
-          riwayatBulanan,
-          skorKesehatan,
-        });
-      } catch (err) {
-        console.error("Gagal ambil data finance untuk AI:", err);
-      }
-    }
-
     fetchFinanceData();
   }, [open]);
 
@@ -164,10 +156,41 @@ export default function AiChatPanel({ open, onClose }: { open: boolean; onClose:
       });
 
       const data = await res.json();
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now().toString() + "-ai", role: "ai", text: data.reply },
-      ]);
+      let replyText = data.reply || "Maaf, terjadi kesalahan.";
+
+      if (data.transaksi) {
+        try {
+          const now = new Date();
+          const tx: Transaction = {
+            id: crypto.randomUUID(),
+            type: data.transaksi.type,
+            cat: data.transaksi.cat,
+            amount: data.transaksi.amount,
+            desc: data.transaksi.desc || "",
+            method: data.transaksi.method || "Cash",
+            date: now.toISOString().split("T")[0],
+            time: now.toTimeString().slice(0, 5),
+            note: "",
+            createdAt: now.toISOString(),
+            goalId: null,
+          };
+
+          await saveTransaction(tx);
+
+          replyText += `\n\n📝 **Tercatat:** ${
+            tx.type === "expense" ? "Pengeluaran" : "Pemasukan"
+          } ${formatRupiah(tx.amount)} (${tx.desc || tx.cat})`;
+
+          // Refresh data finance supaya pertanyaan berikutnya di sesi chat
+          // yang sama langsung pakai angka terbaru (termasuk transaksi ini).
+          fetchFinanceData();
+        } catch (saveErr) {
+          console.error("Gagal simpan transaksi dari AI:", saveErr);
+          replyText += "\n\n⚠️ Maaf, transaksi ini gagal disimpan. Coba input manual ya.";
+        }
+      }
+
+      setMessages((prev) => [...prev, { id: Date.now().toString() + "-ai", role: "ai", text: replyText }]);
     } catch (err) {
       setMessages((prev) => [
         ...prev,

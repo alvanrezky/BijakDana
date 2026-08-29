@@ -282,7 +282,7 @@ export const dictionary = {
 
   aichat_title: { id: "Konsultasi AI", en: "AI Consultation" },
   aichat_subtitle: { id: "Asisten keuangan pribadi BijakDana", en: "BijakDana personal finance assistant" },
-  aichat_welcome: { id: "Halo! Aku asisten keuangan BijakDana 👋 Coba tanya sesuatu, misalnya \"gimana progress dana daruratku?\"", en: "Hi! I'm your BijakDana finance assistant 👋 Try asking something like \"how's my emergency fund progress?\"" },
+  aichat_welcome: { id: "Halo! Aku asisten keuangan BijakDana 👋 Kamu bisa tanya-tanya soal keuanganmu, atau langsung catat transaksi di sini — coba ketik \"gimana progress dana daruratku?\" atau \"jajan kopi 25rb pake gopay\"", en: "Hi! I'm your BijakDana finance assistant 👋 You can ask about your finances, or log a transaction right here — try typing \"how's my emergency fund progress?\" or \"bought coffee for 25k with GoPay\"" },
   aichat_dummy_1: { id: "Fitur konsultasi AI masih dalam tahap pengembangan. Nantinya aku bisa bantu analisis pengeluaran, progress dana darurat, dan strategi investasi kamu langsung di sini 🚀", en: "The AI consultation feature is still in development. Soon I'll be able to help analyze your spending, emergency fund progress, and investment strategy right here 🚀" },
   aichat_dummy_2: { id: "Ini masih tampilan prototipe ya — jawaban di atas belum dari AI sungguhan, tapi begini nanti alur chat-nya bakal terasa.", en: "This is still a prototype view — the reply above isn't from real AI yet, but this is roughly how the chat flow will feel." },
   aichat_input_placeholder: { id: "Tulis pertanyaanmu...", en: "Type your question..." },
