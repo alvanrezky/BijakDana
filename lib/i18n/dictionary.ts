@@ -280,9 +280,12 @@ export const dictionary = {
   incomemodal_source_mixed: { id: "Campuran", en: "Mixed" },
   incomemodal_save_btn: { id: "💾 Simpan", en: "💾 Save" },
 
-  aichat_title: { id: "Konsultasi AI", en: "AI Consultation" },
-  aichat_subtitle: { id: "Asisten keuangan pribadi BijakDana", en: "BijakDana personal finance assistant" },
-  aichat_welcome: { id: "Halo! Aku asisten keuangan BijakDana 👋 Kamu bisa tanya-tanya soal keuanganmu, atau langsung catat transaksi di sini — coba ketik \"gimana progress dana daruratku?\" atau \"jajan kopi 25rb pake gopay\"", en: "Hi! I'm your BijakDana finance assistant 👋 You can ask about your finances, or log a transaction right here — try typing \"how's my emergency fund progress?\" or \"bought coffee for 25k with GoPay\"" },
+  aichat_title: { id: "Mono", en: "Mono" },
+  aichat_subtitle: { id: "Asisten finansial pintar BijakDana", en: "BijakDana's smart financial assistant" },
+  aichat_welcome: {
+    id: "Halo! Aku Mono, asisten finansial pintar di BijakDana. Sesuai panah di senyumku, yuk kita bikin grafik tabunganmu terus naik ke atas! 🚀 Mau cek anggaran hari ini?",
+    en: "Hi! I'm Mono, BijakDana's smart financial assistant. Just like the arrow in my smile, let's make your savings graph keep going up! 🚀 Want to check today's budget?",
+  },
   aichat_dummy_1: { id: "Fitur konsultasi AI masih dalam tahap pengembangan. Nantinya aku bisa bantu analisis pengeluaran, progress dana darurat, dan strategi investasi kamu langsung di sini 🚀", en: "The AI consultation feature is still in development. Soon I'll be able to help analyze your spending, emergency fund progress, and investment strategy right here 🚀" },
   aichat_dummy_2: { id: "Ini masih tampilan prototipe ya — jawaban di atas belum dari AI sungguhan, tapi begini nanti alur chat-nya bakal terasa.", en: "This is still a prototype view — the reply above isn't from real AI yet, but this is roughly how the chat flow will feel." },
   aichat_input_placeholder: { id: "Tulis pertanyaanmu...", en: "Type your question..." },
@@ -484,6 +487,146 @@ export const dictionary = {
 
   achv_stability_good: { id: "Pengeluaran stabil 6 bulan", en: "Stable spending for 6 months" },
   achv_all_buckets_active: { id: "Semua kantong tabungan aktif", en: "All savings buckets active" },
+
+    greeting_0: { id: "Masih terjaga larut malam", en: "Still up late at night" },
+  greeting_1: { id: "Selamat subuh", en: "Good early morning" },
+  greeting_2: { id: "Selamat pagi", en: "Good morning" },
+  greeting_3: { id: "Semangat pagi", en: "Have a great morning" },
+  greeting_4: { id: "Waktunya coffee break", en: "Coffee break time" },
+  greeting_5: { id: "Selamat sore", en: "Good afternoon" },
+  greeting_6: { id: "Selamat malam", en: "Good evening" },
+  greeting_7: { id: "Waktunya istirahat", en: "Time to rest" },
+  ai_bar_question_suffix: { id: "mau tanya apa hari ini?", en: "what do you want to ask today?" },
+  ai_bar_send: { id: "Kirim", en: "Send" },
+
+  aichat_mic_btn: { id: "Tanya pakai suara", en: "Ask by voice" },
+  aichat_mic_unsupported: { id: "Browser kamu belum mendukung input suara.", en: "Your browser doesn't support voice input." },
+  aichat_receipt_btn: { id: "Scan struk", en: "Scan receipt" },
+  aichat_receipt_uploaded: { id: "Struk diunggah", en: "Receipt uploaded" },
+  aichat_receipt_dummy: {
+    id: "Fitur baca struk masih dalam pengembangan. Nantinya aku bisa langsung baca detail transaksi dari struk yang kamu foto 📸",
+    en: "Receipt scanning is still in development. Soon I'll be able to read transaction details directly from your receipt photo 📸",
+  },
+
+  beranda_menu_kesehatan_title: { id: "Kesehatan Keuangan", en: "Financial Health" },
+  beranda_menu_kesehatan_desc: { id: "Skor & analisis kondisi finansialmu", en: "Score & analysis of your financial condition" },
+  beranda_menu_profil_title: { id: "Profil & Akun", en: "Profile & Account" },
+  beranda_menu_profil_desc: { id: "Kelola data dan pengaturan akunmu", en: "Manage your account data and settings" },
+
+  pocket_section_title: { id: "Pocket Budget", en: "Pocket Budget" },
+  pocket_empty: { id: "Belum ada budget kategori yang diatur.", en: "No category budgets set yet." },
+  pocket_modal_sub: { id: "Bulan berjalan", en: "Current month" },
+  pocket_modal_spent: { id: "Terpakai:", en: "Spent:" },
+  pocket_modal_budget: { id: "Budget:", en: "Budget:" },
+  pocket_modal_over_prefix: { id: "Sudah melebihi budget sebesar", en: "Already over budget by" },
+  pocket_modal_remaining_prefix: { id: "Sisa", en: "Remaining" },
+  pocket_modal_remaining_suffix: { id: "lagi sebelum mencapai budget.", en: "left before reaching the budget." },
+  pocket_modal_summary_prefix: { id: "Total pengeluaran kategori ini bulan ini:", en: "Total spending in this category this month:" },
+  pocket_modal_summary_suffix: { id: "", en: "" },
+
+    helpdesk_title: { id: "Bantuan", en: "Help" },
+  helpdesk_subtitle: { id: "Pertanyaan yang sering ditanyakan", en: "Frequently asked questions" },
+  faq_q1: { id: "Bagaimana cara mencatat transaksi?", en: "How do I record a transaction?" },
+  faq_a1: { id: "Buka halaman Tabel Keuangan, klik tombol \"+ Catat Transaksi\", isi nominal dan kategorinya.", en: "Open the Finance Table page, tap \"+ Add Transaction\", fill in the amount and category." },
+  faq_q2: { id: "Bagaimana target Dana Darurat dihitung?", en: "How is the Emergency Fund target calculated?" },
+  faq_a2: { id: "Target selalu 6× pemasukan bulanan kamu, bisa dilihat & diatur di halaman Tabungan & Investasi.", en: "The target is always 6× your monthly income, viewable and adjustable on the Savings & Investment page." },
+  faq_q3: { id: "Bagaimana cara mengubah tema/dark mode?", en: "How do I change the theme/dark mode?" },
+  faq_a3: { id: "Buka halaman Profil & Akun, ada kartu \"Tampilan\" untuk atur dark mode, bahasa, dan warna tema.", en: "Open the Profile & Account page, there's an \"Appearance\" card to set dark mode, language, and theme color." },
+  faq_q4: { id: "Apa itu Skor Kesehatan Keuangan?", en: "What is the Financial Health Score?" },
+  faq_a4: { id: "Skor 0-100 yang dihitung dari 5 pilar keuangan kamu: rasio menabung, kepatuhan budget, dana darurat, stabilitas pengeluaran, dan alokasi tabungan.", en: "A 0-100 score calculated from 5 financial pillars: savings ratio, budget compliance, emergency fund, spending stability, and savings allocation." },
+  faq_q5: { id: "Bisa tambah kategori sendiri?", en: "Can I add my own category?" },
+  faq_a5: { id: "Bisa, buka menu \"Atur Budget\" lalu isi nama kategori baru di kolom bawah daftar kategori.", en: "Yes, open \"Manage Budget\" and enter a new category name in the field below the category list." },
+  faq_q6: { id: "Data saya aman tidak?", en: "Is my data safe?" },
+  faq_a6: { id: "Aman, semua data kamu tersimpan terenkripsi dan cuma bisa diakses oleh akunmu sendiri.", en: "Yes, all your data is stored encrypted and only accessible by your own account." },
+  helpdesk_not_found: { id: "Tidak menemukan jawabannya?", en: "Can't find your answer?" },
+  helpdesk_contact_cs: { id: "Hubungi Customer Service", en: "Contact Customer Service" },
+
+  csv_import_btn: { id: "Impor CSV", en: "Import CSV" },
+  csv_import_title: { id: "Impor Transaksi dari CSV", en: "Import Transactions from CSV" },
+  csv_import_sub: { id: "Upload file CSV transaksi kamu dari Excel/Google Sheets.", en: "Upload your transaction CSV file from Excel/Google Sheets." },
+  csv_import_choose_file: { id: "Pilih file CSV", en: "Choose CSV file" },
+  csv_import_map_sub: { id: "Cocokkan kolom di file kamu dengan data yang dibutuhkan.", en: "Match the columns in your file to the required data." },
+  csv_import_rows_detected: { id: "baris data terdeteksi", en: "rows detected" },
+  csv_import_start_btn: { id: "Mulai Impor", en: "Start Import" },
+  csv_import_loading: { id: "Mengimpor transaksi...", en: "Importing transactions..." },
+  csv_import_done_suffix: { id: "transaksi berhasil diimpor", en: "transactions imported successfully" },
+
+  budgetmodal_new_cat_placeholder: { id: "Nama kategori baru...", en: "New category name..." },
+  budgetmodal_new_cat_btn: { id: "+ Tambah", en: "+ Add" },
+
+  pocket_modal_history_title: { id: "Riwayat transaksi kategori ini", en: "Transaction history for this category" },
+  pocket_modal_history_empty: { id: "Belum ada transaksi bulan ini.", en: "No transactions this month yet." },
+
+  aichat_error: { id: "Maaf, terjadi kesalahan. Coba tanya lagi ya.", en: "Sorry, something went wrong. Please try asking again." },
+
+    aichat_photo_camera: { id: "Ambil Foto Langsung", en: "Take Photo" },
+  aichat_photo_gallery: { id: "Pilih dari Galeri", en: "Choose from Gallery" },
+  csv_import_fallback_hint: {
+    id: "Kategori yang tidak cocok akan otomatis masuk \"Lainnya\", dan metode pembayaran yang tidak diisi akan otomatis jadi \"Tidak diketahui\".",
+    en: "Unmatched categories will automatically go to \"Others\", and unfilled payment methods will automatically become \"Unknown\".",
+  },
+  helpdesk_complaint_info: {
+    id: "Keluhanmu akan dikirim lewat WhatsApp ke tim BijakDana. Kami akan membalas langsung ke WhatsApp kamu.",
+    en: "Your complaint will be sent via WhatsApp to the BijakDana team. We'll reply directly on your WhatsApp.",
+  },
+  helpdesk_complaint_label: { id: "Tulis keluhan kamu", en: "Write your complaint" },
+  helpdesk_complaint_placeholder: { id: "Jelaskan kendala yang kamu alami...", en: "Describe the issue you're facing..." },
+  helpdesk_contact_label: { id: "Nomor WhatsApp / email kamu (opsional)", en: "Your WhatsApp number / email (optional)" },
+  helpdesk_contact_placeholder: { id: "08xxxxxxxxxx atau email@kamu.com", en: "08xxxxxxxxxx or email@you.com" },
+  helpdesk_send_via_wa: { id: "📱 Kirim via WhatsApp", en: "📱 Send via WhatsApp" },
+
+  camera_title: { id: "Ambil Foto Struk", en: "Take Receipt Photo" },
+  camera_permission_denied: {
+    id: "Tidak bisa mengakses kamera. Pastikan kamu sudah mengizinkan akses kamera untuk browser ini.",
+    en: "Can't access camera. Make sure you've allowed camera access for this browser.",
+  },
+
+    helpdesk_search_placeholder: { id: "Cari pertanyaan...", en: "Search a question..." },
+  helpdesk_search_btn: { id: "Cari", en: "Search" },
+  helpdesk_not_found_search: { id: "Belum ketemu jawabannya? Coba hubungi tim kami.", en: "Can't find the answer? Try contacting our team." },
+  helpdesk_ticket_title: { id: "Chat dengan Tim", en: "Chat with Team" },
+  helpdesk_ticket_subtitle: { id: "Kami akan balas secepatnya", en: "We'll reply as soon as possible" },
+  helpdesk_ticket_empty: { id: "Mulai obrolan dengan tim BijakDana di bawah.", en: "Start a conversation with the BijakDana team below." },
+  helpdesk_ticket_placeholder: { id: "Tulis pesan...", en: "Type a message..." },
+  helpdesk_back_to_faq: { id: "← Kembali ke FAQ", en: "← Back to FAQ" },
+
+  camera_switch: { id: "Ganti kamera", en: "Switch camera" },
+
+  token_modal_title: { id: "Beli Token AI", en: "Buy AI Tokens" },
+  token_current_balance: { id: "Sisa token kamu:", en: "Your token balance:" },
+  token_purchase_soon: { id: "Fitur pembayaran token segera hadir!", en: "Token payment feature coming soon!" },
+  token_buy_btn: { id: "Beli Sekarang", en: "Buy Now" },
+  token_buy_btn_short: { id: "Beli Token", en: "Buy Tokens" },
+  token_card_title: { id: "Token AI", en: "AI Tokens" },
+  aichat_token_exhausted: {
+    id: "Token AI kamu sudah habis. Yuk isi ulang biar bisa lanjut konsultasi & catat transaksi lewat chat.",
+    en: "Your AI tokens have run out. Top up to continue chatting & recording transactions via chat.",
+  },
+
+  pocket_strategy_good_title: { id: "Semua budget terkendali!", en: "All budgets under control!" },
+  pocket_strategy_good_desc: { id: "Tidak ada kategori yang melebihi atau mendekati batas budget bulan ini.", en: "No category is over or close to its budget limit this month." },
+  pocket_strategy_reduce_title: { id: "Strategi: Kurangi pengeluaran di sini", en: "Strategy: Reduce spending here" },
+  pocket_strategy_watch_title: { id: "Perlu diawasi", en: "Needs watching" },
+  pocket_strategy_reduce_desc_prefix: { id: "Kategori ini sudah kelebihan", en: "This category is over by" },
+  pocket_strategy_reduce_desc_suffix: { id: "dari budget. Coba kurangi pengeluaran di sini bulan depan.", en: "over budget. Try cutting spending here next month." },
+  pocket_strategy_watch_desc_prefix: { id: "Kategori ini sudah terpakai", en: "This category has used" },
+  pocket_strategy_watch_desc_suffix: { id: "dari budgetnya, hati-hati mendekati batas.", en: "of its budget, watch out as it nears the limit." },
+  pocket_strategy_cta: { id: "Lihat Tabel Keuangan", en: "View Finance Table" },
+
+  streak_label: { id: "Hari Beruntun", en: "Day Streak" },
+
+  notif_show_more: { id: "Baca selengkapnya", en: "Read more" },
+  notif_show_less: { id: "Sembunyikan", en: "Show less" },
+
+    streak_tier_starter: { id: "Awal", en: "Starter" },
+  streak_tier_blue: { id: "Biru", en: "Blue" },
+  streak_tier_purple: { id: "Ungu", en: "Purple" },
+  streak_tier_gold: { id: "Emas", en: "Gold" },
+  streak_tier_diamond: { id: "Berlian", en: "Diamond" },
+  streak_tier_legend: { id: "Legenda", en: "Legend" },
+  streak_celebration_text: { id: "Streak bertambah! Terus konsisten ya 🎉", en: "Streak increased! Keep it up 🎉" },
+
+
 } as const;
 
 export type DictKey = keyof typeof dictionary;

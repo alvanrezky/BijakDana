@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { EXPENSE_CATEGORIES, INCOME_CATEGORIES, getCategoryLabel } from "@/lib/constants/categories";
+import { EXPENSE_CATEGORIES, INCOME_CATEGORIES, getCategoryLabel, mergeWithCustom } from "@/lib/constants/categories";
+import { getCustomCategories } from "@/lib/services/categories.service";
 import { saveTransaction } from "@/lib/services/transactions.service";
 import { parseRupiah, formatRupiah } from "@/lib/utils/format";
-import { Transaction, TxType } from "@/types/models";
+import { Transaction, TxType, Category } from "@/types/models";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import styles from "./TransactionModal.module.css";
 
@@ -35,8 +36,19 @@ export default function TransactionModal({
   const [method, setMethod] = useState("GoPay");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [saving, setSaving] = useState(false);
+  const [customExpenseCats, setCustomExpenseCats] = useState<Category[]>([]);
+  const [customIncomeCats, setCustomIncomeCats] = useState<Category[]>([]);
 
   const locked = !editTx && !!presetType;
+
+  useEffect(() => {
+    if (!open) return;
+    (async () => {
+      const [ce, ci] = await Promise.all([getCustomCategories("expense"), getCustomCategories("income")]);
+      setCustomExpenseCats(ce);
+      setCustomIncomeCats(ci);
+    })();
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -57,7 +69,10 @@ export default function TransactionModal({
     }
   }, [open, editTx, presetCat, presetGoalId, presetType]);
 
-  const categories = type === "expense" ? EXPENSE_CATEGORIES : INCOME_CATEGORIES;
+  const categories =
+    type === "expense"
+      ? mergeWithCustom(EXPENSE_CATEGORIES, customExpenseCats)
+      : mergeWithCustom(INCOME_CATEGORIES, customIncomeCats);
 
   function handleAmountChange(value: string) {
     const raw = value.replace(/[^0-9]/g, "");
@@ -216,6 +231,7 @@ export default function TransactionModal({
                   <option>Cash</option>
                   <option>Kartu debit</option>
                   <option>Kartu kredit</option>
+                  <option>Tidak diketahui</option>
                 </select>
               </div>
               <div className={styles.field}>

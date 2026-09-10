@@ -1,11 +1,13 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { EXPENSE_CATEGORIES, getCategoryLabel } from "@/lib/constants/categories";
+import { EXPENSE_CATEGORIES, getCategoryLabel, mergeWithCustom } from "@/lib/constants/categories";
 import { getBudget, saveBudget } from "@/lib/services/budget.service";
 import { getProfile } from "@/lib/services/profile.service";
+import { getCustomCategories, addCustomCategory } from "@/lib/services/categories.service";
 import { formatRupiah, parseRupiah } from "@/lib/utils/format";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { Category } from "@/types/models";
 import styles from "./BudgetModal.module.css";
 
 export default function BudgetModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -14,28 +16,32 @@ export default function BudgetModal({ open, onClose }: { open: boolean; onClose:
   const [income, setIncome] = useState(0);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [customCats, setCustomCats] = useState<Category[]>([]);
+  const [newCatName, setNewCatName] = useState("");
+  const [addingCat, setAddingCat] = useState(false);
+
+  const allCategories = mergeWithCustom(EXPENSE_CATEGORIES, customCats);
+
+  async function loadAll() {
+    setLoading(true);
+    const [budget, profile, custom] = await Promise.all([
+      getBudget(),
+      getProfile(),
+      getCustomCategories("expense"),
+    ]);
+    setIncome(profile?.income || 0);
+    setCustomCats(custom);
+    const initial: Record<string, string> = {};
+    mergeWithCustom(EXPENSE_CATEGORIES, custom).forEach((c) => {
+      initial[c.id] = budget[c.id] ? formatRupiah(budget[c.id]) : "";
+    });
+    setValues(initial);
+    setLoading(false);
+  }
 
   useEffect(() => {
     if (!open) return;
-    let cancelled = false;
-
-    async function load() {
-      setLoading(true);
-      const [budget, profile] = await Promise.all([getBudget(), getProfile()]);
-      if (cancelled) return;
-      setIncome(profile?.income || 0);
-      const initial: Record<string, string> = {};
-      EXPENSE_CATEGORIES.forEach((c) => {
-        initial[c.id] = budget[c.id] ? formatRupiah(budget[c.id]) : "";
-      });
-      setValues(initial);
-      setLoading(false);
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
+    loadAll();
   }, [open]);
 
   const totalAllocated = useMemo(
@@ -49,9 +55,21 @@ export default function BudgetModal({ open, onClose }: { open: boolean; onClose:
     setValues((prev) => ({ ...prev, [id]: digits ? formatRupiah(parseInt(digits)) : "" }));
   }
 
+  async function handleAddCategory() {
+    if (!newCatName.trim()) return;
+    setAddingCat(true);
+    const created = await addCustomCategory("expense", newCatName.trim());
+    if (created) {
+      setCustomCats((prev) => [...prev, created]);
+      setValues((prev) => ({ ...prev, [created.id]: "" }));
+      setNewCatName("");
+    }
+    setAddingCat(false);
+  }
+
   async function handleSave() {
     const budget: Record<string, number> = {};
-    EXPENSE_CATEGORIES.forEach((c) => {
+    allCategories.forEach((c) => {
       budget[c.id] = parseRupiah(values[c.id] || "0");
     });
     setSaving(true);
@@ -101,7 +119,7 @@ export default function BudgetModal({ open, onClose }: { open: boolean; onClose:
                 </div>
 
                 <div className={styles.list}>
-                  {EXPENSE_CATEGORIES.map((c) => (
+                  {allCategories.map((c) => (
                     <div key={c.id} className={styles.row}>
                       <span className={styles.icon}>{c.icon}</span>
                       <span className={styles.name}>{getCategoryLabel(c, lang)}</span>
@@ -113,6 +131,19 @@ export default function BudgetModal({ open, onClose }: { open: boolean; onClose:
                       />
                     </div>
                   ))}
+                </div>
+
+                <div className={styles.addCatRow}>
+                  <input
+                    className={styles.addCatInput}
+                    value={newCatName}
+                    onChange={(e) => setNewCatName(e.target.value)}
+                    placeholder={t("budgetmodal_new_cat_placeholder")}
+                    onKeyDown={(e) => e.key === "Enter" && handleAddCategory()}
+                  />
+                  <button className={styles.addCatBtn} onClick={handleAddCategory} disabled={addingCat || !newCatName.trim()}>
+                    {t("budgetmodal_new_cat_btn")}
+                  </button>
                 </div>
               </>
             )}

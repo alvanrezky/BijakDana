@@ -26,12 +26,21 @@ const menu: { path: string; titleKey: DictKey; descKey: DictKey; bg: string; col
     bg: "#F5F3FF", color: "#8B5CF6",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
   },
+  {
+    path: "/kesehatan", titleKey: "beranda_menu_kesehatan_title", descKey: "beranda_menu_kesehatan_desc",
+    bg: "#FEE2E2", color: "#EF4444",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
+  },
+  {
+    path: "/profil", titleKey: "beranda_menu_profil_title", descKey: "beranda_menu_profil_desc",
+    bg: "#F3F4F6", color: "#6B7280",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  },
 ];
 
 export default function BerandaMenuGrid() {
   const router = useRouter();
   const { t } = useLanguage();
-
   return (
     <div className={styles.grid}>
       {menu.map((item, i) => (
@@ -50,9 +59,7 @@ export default function BerandaMenuGrid() {
           <div className={styles.title}>{t(item.titleKey)}</div>
           <div className={styles.desc}>{t(item.descKey)}</div>
           <div className={styles.foot}>
-            <span>
-              {t("beranda_menu_open_prefix")} {t(item.titleKey).split(" ")[0].toLowerCase()}
-            </span>
+            <span>{t("beranda_menu_open_prefix")} {t(item.titleKey).split(" ")[0].toLowerCase()}</span>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="9 18 15 12 9 6" />
             </svg>

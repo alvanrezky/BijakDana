@@ -1,14 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { getNotifications, markAllNotificationsRead, NotificationRow } from "@/lib/notifications/notifications.service";
 import styles from "./NotificationPanel.module.css";
 
+const BODY_TRUNCATE_LENGTH = 90;
+
+function routeForType(type: string): string | null {
+  if (type === "health_score") return "/kesehatan";
+  if (type === "budget_exceeded") return "/tabel";
+  return null;
+}
+
 export default function NotificationPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { t } = useLanguage();
+  const router = useRouter();
   const [notifs, setNotifs] = useState<NotificationRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!open) return;
@@ -20,6 +31,24 @@ export default function NotificationPanel({ open, onClose }: { open: boolean; on
       await markAllNotificationsRead();
     })();
   }, [open]);
+
+  function handleClickItem(n: NotificationRow) {
+    const route = routeForType(n.type);
+    if (route) {
+      router.push(route);
+      onClose();
+    }
+  }
+
+  function toggleExpand(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   return (
     <AnimatePresence>
@@ -61,15 +90,32 @@ export default function NotificationPanel({ open, onClose }: { open: boolean; on
               </div>
             ) : (
               <div className={styles.list}>
-                {notifs.map((n) => (
-                  <div key={n.id} className={styles.item}>
-                    <div className={styles.itemTitle}>{n.title}</div>
-                    <div className={styles.itemBody}>{n.body}</div>
-                    <div className={styles.itemTime}>
-                      {new Date(n.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                {notifs.map((n) => {
+                  const clickable = routeForType(n.type) !== null;
+                  const isLong = n.body.length > BODY_TRUNCATE_LENGTH;
+                  const isExpanded = expandedIds.has(n.id);
+                  const displayBody = isLong && !isExpanded ? n.body.slice(0, BODY_TRUNCATE_LENGTH) + "..." : n.body;
+
+                  return (
+                    <div
+                      key={n.id}
+                      className={styles.item}
+                      style={clickable ? { cursor: "pointer" } : undefined}
+                      onClick={() => clickable && handleClickItem(n)}
+                    >
+                      <div className={styles.itemTitle}>{n.title}</div>
+                      <div className={styles.itemBody}>{displayBody}</div>
+                      {isLong && (
+                        <button className={styles.expandBtn} onClick={(e) => toggleExpand(n.id, e)}>
+                          {isExpanded ? t("notif_show_less") : t("notif_show_more")}
+                        </button>
+                      )}
+                      <div className={styles.itemTime}>
+                        {new Date(n.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </motion.div>

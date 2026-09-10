@@ -122,3 +122,35 @@
   padding-top: 6px;
   margin-top: 2px;
 }
+
+.addCatRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+.addCatInput {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-family: inherit;
+  background: var(--card);
+  color: var(--text);
+}
+.addCatBtn {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.addCatBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

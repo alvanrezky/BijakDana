@@ -14,10 +14,16 @@ import { getProfile } from "@/lib/services/profile.service";
 import { calcStats } from "@/lib/business/stats";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { Transaction, Budget, Profile } from "@/types/models";
+import AiHomeSearchBar from "@/features/ai-chat/AiHomeSearchBar";
+import { useAiChat } from "@/lib/ai/AiChatContext";
+import StreakBadge from "@/features/beranda/StreakBadge";
+import { calcStreak } from "@/lib/business/streak";
+import StreakCelebration from "@/features/beranda/StreakCelebration";
 
 export default function BerandaPage() {
   const router = useRouter();
   const { t } = useLanguage();
+  const { openChat } = useAiChat();
   const [mounted, setMounted] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [budget, setBudget] = useState<Budget>({});
@@ -57,8 +63,16 @@ export default function BerandaPage() {
       <Topbar titleKey="nav_beranda" />
       <main style={{ padding: 24, fontFamily: "'Inter', sans-serif" }}>
         <BerandaGreeting profile={profile} />
+        <StreakBadge streak={calcStreak(transactions)} />
+        <StreakCelebration streak={calcStreak(transactions)} />
         <BerandaBalanceCard stats={stats} income={profile.income} />
         <BerandaAlerts stats={stats} budget={budget} />
+        <AiHomeSearchBar
+          profile={profile}
+          onSubmit={(msg) => openChat(msg)}
+          onOpenMic={() => openChat(undefined, "mic")}
+          onOpenCamera={() => openChat(undefined, "camera")}
+        />
 
         <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 14 }}>
           {t("beranda_menu_question")}

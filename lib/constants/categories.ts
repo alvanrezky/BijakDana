@@ -24,16 +24,21 @@ export const INCOME_CATEGORIES: Category[] = [
   { id: "lain-in", label: "Lainnya", icon: "💰", color: "#6B7280", bg: "#F3F4F6" },
 ];
 
-export function findCategory(id: string, type: "income" | "expense"): Category {
-  // Cari di gabungan kedua daftar dulu (ID unik di semua kategori), supaya transaksi
-  // "Gunakan dari tabungan/dana darurat" (type income, cat tabungan/danadrt) tetap
-  // dapat ikon & label yang benar, bukan fallback ke "Lainnya".
-  const combined = [...EXPENSE_CATEGORIES, ...INCOME_CATEGORIES];
+export function findCategory(id: string, type: "income" | "expense", extra: Category[] = []): Category {
+  const combined = [...EXPENSE_CATEGORIES, ...INCOME_CATEGORIES, ...extra];
   const found = combined.find((c) => c.id === id);
   if (found) return found;
 
   const list = type === "income" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
   return list[list.length - 1];
+}
+
+// Sisipkan kategori kustom sebelum "Lainnya", biar "Lainnya" selalu di akhir daftar.
+export function mergeWithCustom(defaults: Category[], custom: Category[]): Category[] {
+  if (custom.length === 0) return defaults;
+  const withoutLast = defaults.slice(0, -1);
+  const last = defaults[defaults.length - 1];
+  return [...withoutLast, ...custom, last];
 }
 
 const CATEGORY_LABELS_EN: Record<string, string> = {

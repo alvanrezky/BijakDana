@@ -28,6 +28,9 @@ export async function getProfile(): Promise<Profile | null> {
     emergencyFundTarget: meta.emergencyFundTarget || 0,
     onboarded: meta.onboarded === true,
     healthScoreNotifPref: meta.healthScoreNotifPref || "monthly",
+    aiTokenBalance: meta.aiTokenBalance ?? 250000,
+    lastHealthScoreCheckedMonth: meta.lastHealthScoreCheckedMonth || "",
+    lastHealthScoreValue: meta.lastHealthScoreValue ?? -1,
   };
 }
 
@@ -44,6 +47,9 @@ export async function saveProfile(profile: Profile): Promise<void> {
       emergencyFundTarget: profile.emergencyFundTarget,
       onboarded: profile.onboarded,
       healthScoreNotifPref: profile.healthScoreNotifPref,
+      aiTokenBalance: profile.aiTokenBalance,
+      lastHealthScoreCheckedMonth: profile.lastHealthScoreCheckedMonth,
+      lastHealthScoreValue: profile.lastHealthScoreValue,
     },
   });
 

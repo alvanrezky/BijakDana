@@ -1,0 +1,121 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 24px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.balanceBox {
+  background: var(--green-lt);
+  color: var(--green-d);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  margin-bottom: 16px;
+}
+.balanceBox strong {
+  font-size: 14px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.pkg,
+.pkgActive {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--card);
+}
+.pkgActive {
+  border-color: var(--green);
+  background: var(--green-lt);
+}
+.pkgTokens {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+}
+.pkgLabel {
+  font-size: 9.5px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.pkgPrice {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--green-d);
+}
+.buyBtn {
+  width: 100%;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cancelBtn {
+  width: 100%;
+  background: transparent;
+  color: var(--text2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.comingSoonBanner {
+  background: #fff4e5;
+  color: #995c00;
+  border: 1px solid #ffdca8;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 8px 0 14px;
+  text-align: center;
+}
+
+.pkgDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  text-align: center;
+  cursor: not-allowed;
+  user-select: none;
+}
+
+.buyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -24,6 +24,9 @@ export type Profile = {
   emergencyFundCurrent: number;
   emergencyFundTarget: number;
   onboarded: boolean;
+  aiTokenBalance: number;
+  lastHealthScoreCheckedMonth: string;
+  lastHealthScoreValue: number;
   healthScoreNotifPref: "monthly" | "on_drop" | "off";
 };
 export type Category = {

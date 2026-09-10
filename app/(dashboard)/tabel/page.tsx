@@ -13,6 +13,8 @@ import { Transaction, Budget } from "@/types/models";
 import { findCategory, getCategoryLabel } from "@/lib/constants/categories";
 import { monthKey, monthLabel, formatDate, formatRupiah } from "@/lib/utils/format";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import BudgetPocketsRow from "@/features/tabel/BudgetPocketsRow";
+import BudgetPocketDetailModal from "@/features/tabel/BudgetPocketDetailModal";
 
 
 export default function TabelPage() {
@@ -28,6 +30,7 @@ export default function TabelPage() {
   const [editTx, setEditTx] = useState<Transaction | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [selectedPocketCat, setSelectedPocketCat] = useState<string | null>(null);
 
   async function loadAll() {
     const [tx, bud] = await Promise.all([getTransactions(), getBudget()]);
@@ -123,6 +126,7 @@ export default function TabelPage() {
         </div>
 
         <TabelStatsRow stats={stats} filteredCount={filtered.length} />
+        <BudgetPocketsRow budget={budget} byCategory={stats.byCategory} onSelectCategory={setSelectedPocketCat} />
 
         <TabelToolbar
           search={search}
@@ -145,6 +149,18 @@ export default function TabelPage() {
           onDelete={handleDelete}
           sortOrder={sortOrder}
         />
+
+        <BudgetPocketDetailModal
+          category={selectedPocketCat ? findCategory(selectedPocketCat, "expense") : null}
+          spent={selectedPocketCat ? stats.byCategory[selectedPocketCat] || 0 : 0}
+          budgetAmt={selectedPocketCat ? budget[selectedPocketCat] || 0 : 0}
+          transactions={
+          selectedPocketCat
+          ? transactions.filter((tx) => tx.type === "expense" && tx.cat === selectedPocketCat && monthKey(tx.date) === monthKey(new Date().toISOString()))
+          : []
+        }
+  onClose={() => setSelectedPocketCat(null)}
+/>
       </main>
 
       <TransactionModal

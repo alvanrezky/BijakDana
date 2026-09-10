@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "@/lib/constants/categories";
 
-const FREE_MODELS = ["openrouter/free"];
+const FREE_MODELS = [ "openrouter/free", ];
+
+const VISION_MODELS = [
+  "qwen/qwen2.5-vl-32b-instruct:free",
+  "meta-llama/llama-3.2-11b-vision-instruct:free",
+  "google/gemini-2.0-flash-exp:free",
+];
 const MAX_ATTEMPTS_PER_MODEL = 3;
 
 const VALID_EXPENSE_CATS = EXPENSE_CATEGORIES.map((c) => c.id);
@@ -45,15 +51,18 @@ function formatRupiah(n: number) {
   return `Rp${(n || 0).toLocaleString("id-ID")}`;
 }
 
+type TransaksiItem = {
+  type: "income" | "expense";
+  cat: string;
+  amount: number;
+  desc: string;
+  method: string;
+  date?: string;
+};
+
 type ParsedAiResponse = {
   reply: string;
-  transaksi: {
-    type: "income" | "expense";
-    cat: string;
-    amount: number;
-    desc: string;
-    method: string;
-  } | null;
+  transaksi: TransaksiItem[] | null;
 };
 
 function extractJson(raw: string): any | null {
@@ -73,39 +82,56 @@ function extractJson(raw: string): any | null {
   }
 }
 
+function normalizeDateStr(raw: any): string | undefined {
+  if (typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+  return undefined;
+}
+
+function validateTransaksiItem(t: any): TransaksiItem | null {
+  if (!t || typeof t !== "object") return null;
+
+  const type = t.type === "income" || t.type === "expense" ? t.type : null;
+  const amount = typeof t.amount === "number" && isFinite(t.amount) && t.amount > 0 ? t.amount : null;
+  if (!type || !amount) return null;
+
+  const matchedCat = normalizeCategory(t.cat, type);
+  const cat = matchedCat ?? (type === "expense" ? "lain" : "lain-in");
+
+  if (!matchedCat) {
+    console.warn(`Kategori dari AI tidak match ("${t.cat}"), fallback ke "${cat}"`);
+  }
+
+  const method = VALID_METHODS.includes(t.method) ? t.method : "Cash";
+  const desc = typeof t.desc === "string" ? t.desc.trim().slice(0, 100) : "";
+  const date = normalizeDateStr(t.date);
+
+  return { type, cat, amount, desc, method, ...(date ? { date } : {}) };
+}
+
 function validateParsed(parsed: any): ParsedAiResponse | null {
   if (!parsed || typeof parsed !== "object") return null;
 
   const reply = typeof parsed.reply === "string" ? parsed.reply.trim() : "";
   if (reply.length < 3) return null;
 
-  let transaksi: ParsedAiResponse["transaksi"] = null;
+  let transaksi: TransaksiItem[] | null = null;
 
-  if (parsed.transaksi && typeof parsed.transaksi === "object") {
-    const t = parsed.transaksi;
-    const type = t.type === "income" || t.type === "expense" ? t.type : null;
-    const amount = typeof t.amount === "number" && isFinite(t.amount) && t.amount > 0 ? t.amount : null;
-
-        if (type && amount) {
-      const matchedCat = normalizeCategory(t.cat, type);
-      const cat = matchedCat ?? (type === "expense" ? "lain" : "lain-in");
-
-      if (!matchedCat) {
-        console.warn(`Kategori dari AI tidak match ("${t.cat}"), fallback ke "${cat}"`);
-      }
-
-      const method = VALID_METHODS.includes(t.method) ? t.method : "Cash";
-      const desc = typeof t.desc === "string" ? t.desc.trim().slice(0, 100) : "";
-
-      transaksi = { type, cat, amount, desc, method };
-    }
+  const rawTransaksi = parsed.transaksi;
+  if (rawTransaksi) {
+    const rawList = Array.isArray(rawTransaksi) ? rawTransaksi : [rawTransaksi];
+    const validItems = rawList
+      .map(validateTransaksiItem)
+      .filter((x): x is TransaksiItem => x !== null);
+    if (validItems.length > 0) transaksi = validItems;
   }
 
   return { reply, transaksi };
 }
 
 export async function POST(req: NextRequest) {
-  const { messages, userFinance } = await req.json();
+  const { messages, userFinance, image } = await req.json();
 
   let dataText = "Data keuangan pengguna belum tersedia.";
 
@@ -189,7 +215,7 @@ ${
 `.trim();
   }
 
-  const systemPrompt = `Kamu adalah asisten keuangan pribadi BijakDana. Kamu punya 2 kemampuan: (1) menjawab pertanyaan/konsultasi soal keuangan pengguna, dan (2) mencatat transaksi baru kalau pengguna menyebutkan pemasukan/pengeluaran dalam kalimat natural (misal "tadi jajan kopi 25rb pake gopay" atau "gajian 3 juta").
+  const systemPrompt = `Kamu adalah asisten keuangan pribadi BijakDana. Kamu punya 2 kemampuan: (1) menjawab pertanyaan/konsultasi soal keuangan pengguna, dan (2) mencatat satu atau lebih transaksi baru kalau pengguna menyebutkan pemasukan/pengeluaran dalam kalimat natural (misal "tadi jajan kopi 25rb pake gopay" atau "gajian 3 juta"), atau lewat foto struk belanja yang dilampirkan.
 
 ATURAN OUTPUT PALING PENTING (berlaku apa pun model yang menjalankanmu):
 Kamu HARUS SELALU membalas HANYA dengan satu objek JSON valid, tanpa teks lain di luar JSON, tanpa markdown code fence, dengan struktur PERSIS seperti ini:
@@ -199,18 +225,31 @@ Kamu HARUS SELALU membalas HANYA dengan satu objek JSON valid, tanpa teks lain d
   "transaksi": null
 }
 
-Kalau pengguna JELAS menyebutkan transaksi baru (ada nominal uang dan jenis pemasukan/pengeluaran), isi "transaksi" dengan objek berikut, dan "reply" berisi konfirmasi natural bahwa transaksi sudah dicatat:
+Kalau pengguna menyebutkan SATU ATAU LEBIH transaksi baru (ada nominal uang dan jenis pemasukan/pengeluaran) dalam satu pesan, isi "transaksi" dengan ARRAY berisi satu objek per transaksi:
 
 {
-  "reply": "Oke, sudah aku catat ya! ...",
-  "transaksi": {
-    "type": "expense" atau "income",
-    "cat": "salah satu id kategori valid di bawah",
-    "amount": nominal dalam angka (tanpa titik/koma, contoh 25000 bukan 25rb atau 25.000),
-    "desc": "deskripsi singkat dari kalimat pengguna",
-    "method": "salah satu metode pembayaran valid di bawah, default Cash kalau tidak disebutkan"
-  }
+  "reply": "kalimat konfirmasi natural, sebutkan berapa transaksi yang dicatat kalau lebih dari satu",
+  "transaksi": [
+    {
+      "type": "expense" atau "income",
+      "cat": "salah satu id kategori valid di bawah",
+      "amount": nominal dalam angka (tanpa titik/koma, contoh 25000 bukan 25rb atau 25.000),
+      "desc": "deskripsi singkat dari transaksi ini",
+      "method": "salah satu metode pembayaran valid di bawah, default Cash kalau tidak disebutkan",
+      "date": "YYYY-MM-DD, HANYA isi kalau pengguna/struk menyebutkan tanggal spesifik, kalau tidak yakin JANGAN sertakan field ini sama sekali"
+    }
+  ]
 }
+
+Kalau pengguna menyebutkan BEBERAPA transaksi sekaligus dalam satu pesan (misalnya bercerita beberapa pengeluaran hari ini), masukkan SEMUA transaksi itu sebagai elemen terpisah di dalam array "transaksi" — jangan digabung jadi satu transaksi kalau kategori atau nominalnya berbeda.
+
+Kalau pengguna mengirim GAMBAR STRUK BELANJA:
+- Baca semua item/baris pembelian di struk tersebut beserta nominalnya.
+- Kalau semua item masuk kategori yang sama (misalnya semua bahan makanan), boleh digabung jadi satu transaksi dengan total nominal struk.
+- Kalau item-itemnya masuk kategori yang jelas berbeda (misalnya ada makanan dan ada alat tulis), catat sebagai transaksi terpisah per kategori.
+- Gunakan tanggal di struk untuk field "date" kalau tanggalnya terbaca jelas, kalau tidak terbaca JANGAN sertakan field "date".
+- Kalau ada nama toko/merchant di struk, sertakan di "desc".
+- Kalau struk tidak jelas terbaca / bukan struk belanja, set "transaksi": null dan jelaskan di "reply" bahwa gambar tidak bisa dibaca dengan jelas, minta pengguna kirim ulang foto yang lebih terang/jelas. JANGAN mengarang nominal yang tidak benar-benar terbaca.
 
 Kalau pengguna hanya bertanya/konsultasi (bukan mencatat transaksi), field "transaksi" harus null.
 
@@ -236,16 +275,44 @@ ATURAN LAIN:
 - Jika pengguna bertanya soal bulan/periode tertentu, gunakan data RIWAYAT PEMASUKAN & PENGELUARAN PER BULAN.
 - Jika pengguna bertanya soal skor kesehatan finansial, gunakan data SKOR KESEHATAN FINANSIAL, jelaskan dengan bahasa mudah dipahami, fokus ke pilar paling lemah, dan beri saran konkret.
 - Jika kalimat pengguna ambigu soal nominal/jenis transaksi, JANGAN mengarang — set "transaksi": null dan tanyakan klarifikasi lewat "reply".
+- Jangan pernah mengarang nominal atau tanggal transaksi dari struk yang tidak benar-benar terbaca jelas.
+- Gunakan nada bicara yang ramah, hangat, dan sedikit playful — seperti teman yang paham keuangan, BUKAN robot formal. Sisipkan emoji yang relevan secara wajar (1-3 emoji per balasan cukup), contoh: 😊 🎉 💰 📝 ✅ 💡 ⚠️ 🔥.
+- Saat mengonfirmasi SATU transaksi berhasil dicatat, ikuti format ini persis: "Oke, sudah aku catat ya! [deskripsi singkat] berhasil tercatat.\n\n📝 **Tercatat**: [Pengeluaran/Pemasukan] Rp[nominal] ([kategori])"
+- Saat mengonfirmasi LEBIH DARI SATU transaksi sekaligus: satu kalimat pembuka ramah, baris kosong, lalu tiap transaksi di baris terpisah diawali "📝 " dengan format: "📝 [deskripsi] - Rp[nominal] ([metode])".
+- Gunakan **bold** HANYA untuk menegaskan nominal, nama kategori, atau status penting (misal Sehat/Cukup/Perlu Perhatian) — jangan bold satu kalimat penuh. Sesekali boleh pakai *italic* untuk penekanan halus.
+- SELALU tulis dalam Bahasa Indonesia yang konsisten dan baku secara santai. Hindari mencampur kata Inggris kalau ada padanan Indonesia yang lazim dipakai (gunakan "pengeluaran/pemasukan", bukan "expense/income"; "catatan", bukan "note"). Periksa ulang ejaan sebelum menjawab, pastikan tidak ada typo.
 
 ${dataText}`;
 
-  const payloadMessages = [{ role: "system", content: systemPrompt }, ...messages];
+  let payloadMessages: any[] = [{ role: "system", content: systemPrompt }, ...messages];
+
+  if (image && payloadMessages.length > 0) {
+    const lastIdx = payloadMessages.length - 1;
+    const lastMsg = payloadMessages[lastIdx];
+    if (lastMsg.role === "user") {
+      payloadMessages[lastIdx] = {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text:
+              typeof lastMsg.content === "string" && lastMsg.content.trim()
+                ? lastMsg.content
+                : "Tolong baca struk belanja ini dan catat transaksinya.",
+          },
+          { type: "image_url", image_url: { url: image } },
+        ],
+      };
+    }
+  }
+
+  const modelsToTry = image ? VISION_MODELS : FREE_MODELS;
 
   let result: ParsedAiResponse | null = null;
   let lastError = "";
   let lastRawReply = "";
 
-  outer: for (const model of FREE_MODELS) {
+  outer: for (const model of modelsToTry) {
     for (let attempt = 1; attempt <= MAX_ATTEMPTS_PER_MODEL; attempt++) {
       try {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -290,7 +357,9 @@ ${dataText}`;
       return NextResponse.json({ reply: lastRawReply, transaksi: null });
     }
     return NextResponse.json({
-      reply: "Maaf, AI sedang sulit dihubungi. Coba tanya lagi sebentar ya.",
+      reply: image
+        ? "Maaf, aku belum berhasil membaca struknya dengan jelas. Coba foto ulang dengan pencahayaan lebih terang ya."
+        : "Maaf, AI sedang sulit dihubungi. Coba tanya lagi sebentar ya.",
       transaksi: null,
     });
   }

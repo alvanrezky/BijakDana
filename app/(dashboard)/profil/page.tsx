@@ -13,6 +13,7 @@ import { deleteAllBudgets } from "@/lib/services/budget.service";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { Profile } from "@/types/models";
 import AppearanceSettingsCard from "@/features/profil/AppearanceSettingsCard";
+import TokenPurchaseModal from "@/features/profil/TokenPurchaseModal";
 
 export default function ProfilPage() {
   const { t } = useLanguage();
@@ -22,6 +23,7 @@ export default function ProfilPage() {
   const [budgetModalOpen, setBudgetModalOpen] = useState(false);
   const [subModalOpen, setSubModalOpen] = useState(false);
   const [resetting, setResetting] = useState(false);
+  const [tokenModalOpen, setTokenModalOpen] = useState(false);
 
   async function loadAll() {
     const prof = await getProfile();
@@ -75,6 +77,30 @@ export default function ProfilPage() {
         <ProfilHeaderCard profile={profile} />
         <AppearanceSettingsCard />
         <ProfilSubscriptionCard onExtend={() => setSubModalOpen(true)} />
+          <div
+            style={{
+              background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16,
+              padding: 20, marginBottom: 16, boxShadow: "var(--shadow-sm)",
+            }}
+          >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text)" }}>{t("token_card_title")}</div>
+              <div style={{ fontSize: 11.5, color: "var(--text2)", marginTop: 3 }}>
+                {t("token_current_balance")} <strong>{profile.aiTokenBalance.toLocaleString("id-ID")}</strong>
+              </div>
+            </div>
+            <button
+              onClick={() => setTokenModalOpen(true)}
+              style={{
+                background: "var(--green)", color: "#fff", border: "none", borderRadius: 8,
+                padding: "8px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer",
+              }}
+            >
+              {t("token_buy_btn_short")}
+            </button>
+          </div>
+        </div>
 
         <ProfilMenuList
           onOpenBudget={() => setBudgetModalOpen(true)}
@@ -98,6 +124,7 @@ export default function ProfilPage() {
 
       <BudgetModal open={budgetModalOpen} onClose={() => setBudgetModalOpen(false)} />
       <SubscriptionModal open={subModalOpen} onClose={() => setSubModalOpen(false)} />
+      <TokenPurchaseModal open={tokenModalOpen} onClose={() => setTokenModalOpen(false)} currentBalance={profile.aiTokenBalance} onPurchased={() => loadAll()} />
     </>
   );
 }

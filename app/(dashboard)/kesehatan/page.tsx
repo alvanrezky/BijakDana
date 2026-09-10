@@ -15,6 +15,8 @@ import { getTransactions } from "@/lib/services/transactions.service";
 import { getBudget } from "@/lib/services/budget.service";
 import { getProfile, saveProfile } from "@/lib/services/profile.service";
 import { getGoals } from "@/lib/services/goals.service";
+import PocketStrategyCard from "@/features/kesehatan/PocketStrategyCard";
+import { getPocketStrategy } from "@/lib/business/pocketStrategy";
 import {
   calcHealthScore,
   calcHealthScoreTrend,
@@ -80,6 +82,19 @@ export default function KesehatanPage() {
   const trend = calcHealthScoreTrend(transactions, budget, profile, goals, referenceDate);
   const achievements = calcAchievements(transactions, profile, goals, result);
   const weakest = weakestPillars(result.pillars, 2);
+
+  const expensesByCategory: Record<string, number> = {};
+  transactions
+    .filter((tx) => tx.type === "expense" && tx.date.startsWith(currentMonthKeyStr))
+    .forEach((tx) => {
+      expensesByCategory[tx.cat] = (expensesByCategory[tx.cat] || 0) + tx.amount;
+    });
+
+  const hasBudgetPillar = result.pillars.some((p) => p.key === "budget");
+  const pocketStrategy = getPocketStrategy(
+    budget,
+    hasBudgetPillar ? expensesByCategory : {}
+  );
 
   const monthKeySet = new Set(transactions.map((tx) => monthKey(tx.date)));
   monthKeySet.add(currentMonthKeyStr);
@@ -179,7 +194,7 @@ export default function KesehatanPage() {
         </div>
 
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, boxShadow: "var(--shadow-sm)" }}>
-          <PeerComparisonCard />
+          <PocketStrategyCard strategy={pocketStrategy} />
         </div>
 
         <div style={{ fontSize: 10.5, color: "var(--text3)", marginTop: 20, lineHeight: 1.6 }}>{t("health_methodology_note")}</div>
