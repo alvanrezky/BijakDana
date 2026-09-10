@@ -10,6 +10,10 @@ import { createNotification } from "@/lib/notifications/notifications.service";
 
 const budgetableCategories = EXPENSE_CATEGORIES.filter((c) => c.id !== "lain");
 
+// Saldo token AI gratis yang diberikan ke user baru saat pertama kali onboarding.
+// Ubah angka ini kalau kebijakan token gratis Anda berbeda.
+const DEFAULT_FREE_TOKEN_BALANCE = 5000;
+
 export default function OnboardingWizard({ onFinish }: { onFinish: () => void }) {
   const { t, lang } = useLanguage();
   const [step, setStep] = useState(0);
@@ -69,6 +73,9 @@ export default function OnboardingWizard({ onFinish }: { onFinish: () => void })
       emergencyFundCurrent,
       emergencyFundTarget: income * 6,
       onboarded: true,
+      aiTokenBalance: DEFAULT_FREE_TOKEN_BALANCE,
+      lastHealthScoreCheckedMonth: "",
+      lastHealthScoreValue: 0,
       healthScoreNotifPref: "monthly",
     };
 
