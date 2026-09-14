@@ -14,7 +14,7 @@ const steps = [
   {
     num: "03",
     title: "Bertumbuh",
-    desc: "Pantau progres lewat grafik yang mudah dibaca, dan lihat kebiasaan finansial baik yang mulai terbentuk.",
+    desc: "Tumbuhkan uang Anda lewat pilihan investasi cerdas dan lihat bagaimana aset Anda berkembang dari waktu ke waktu.",
   },
 ];
 
