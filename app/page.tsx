@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+import LandingPage from "@/features/landing/LandingPage";
+
 export default function Home() {
-  redirect("/beranda");
+  return <LandingPage />;
 }

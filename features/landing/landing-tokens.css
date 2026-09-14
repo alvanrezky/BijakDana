@@ -1,0 +1,74 @@
+.landing {
+  --l-brand: #249776;
+  --l-brand-dark: #186B52;
+  --l-brand-deep: #123D2F;
+  --l-green-a: #2CAE7C;
+  --l-green-b: #128058;
+  --l-green-100: #E6F2EC;
+  --l-bg: #F5F7F2;
+  --l-amber: #E8A33D;
+  --l-amber-dark: #C67F1E;
+  --l-ink: #142019;
+  --l-ink-soft: #4E5A51;
+  --l-white: #FFFFFF;
+  --l-border: #DAE3D5;
+  --l-max: 1180px;
+
+  background: var(--l-bg);
+  color: var(--l-ink);
+  font-family: 'Inter', sans-serif;
+}
+
+.landing * { box-sizing: border-box; }
+.landing img, .landing svg { display: block; max-width: 100%; }
+.landing a { color: inherit; text-decoration: none; }
+.landing p { margin: 0; color: var(--l-ink-soft); line-height: 1.65; }
+
+.l-wrap {
+  max-width: var(--l-max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.l-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 26px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform .15s ease, background .2s ease, border-color .2s ease;
+  font-family: 'Inter', sans-serif;
+}
+.l-btn:active { transform: scale(0.97); }
+
+.l-btn-primary { background: var(--l-amber); color: var(--l-brand-deep); }
+.l-btn-primary:hover { background: var(--l-amber-dark); }
+
+.l-btn-ghost { background: transparent; color: var(--l-brand-deep); border-color: var(--l-brand-deep); }
+.l-btn-ghost:hover { background: var(--l-brand-deep); color: var(--l-white); }
+
+.l-btn-on-dark { background: var(--l-amber); color: var(--l-brand-deep); }
+.l-btn-on-dark:hover { background: #fff; }
+
+.l-btn-textlink { padding: 10px 6px; border: none; color: var(--l-brand-deep); font-weight: 600; }
+
+.l-section { padding: 96px 0; }
+.l-section-head { max-width: 640px; margin-bottom: 52px; }
+.l-section-head h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+  color: var(--l-brand-deep);
+  margin: 0;
+  line-height: 1.15;
+}
+.l-section-head p { margin-top: 14px; font-size: 1.05rem; }
+.l-rule { width: 56px; height: 3px; background: var(--l-amber); margin-bottom: 20px; border-radius: 2px; }
+
+@media (max-width: 860px) {
+  .l-wrap { padding: 0 20px; }
+}

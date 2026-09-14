@@ -1,0 +1,20 @@
+.banner {
+  background: var(--l-brand-deep);
+  border-radius: 20px;
+  margin: 0 32px;
+  padding: 64px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  max-width: calc(var(--l-max) - 64px);
+  margin-left: auto;
+  margin-right: auto;
+}
+.title { color: var(--l-white); font-size: clamp(1.6rem, 3vw, 2.2rem); max-width: 18ch; margin: 0; }
+.desc { color: #C9E3D5; margin-top: 10px; max-width: 40ch; }
+
+@media (max-width: 860px) {
+  .banner { padding: 44px 26px; margin: 0 16px; }
+}

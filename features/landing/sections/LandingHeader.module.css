@@ -1,0 +1,77 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(245, 247, 242, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--l-border);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.28rem;
+  color: var(--l-brand-deep);
+}
+.logoMark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.logoMark img { width: 100%; height: 100%; object-fit: cover; }
+
+.navLinks { display: flex; gap: 34px; align-items: center; }
+.navLinks a {
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--l-ink);
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+  transition: border-color .15s;
+}
+.navLinks a:hover { border-bottom-color: var(--l-amber); }
+
+.navActions { display: flex; align-items: center; gap: 10px; }
+
+.navToggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.navToggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--l-brand-deep);
+  margin: 5px 0;
+}
+
+@media (max-width: 860px) {
+  .navLinks { display: none; }
+  .navToggle { display: block; }
+  .navLinksOpen {
+    display: flex !important;
+    position: absolute;
+    top: 76px;
+    left: 0;
+    right: 0;
+    background: var(--l-bg);
+    flex-direction: column;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--l-border);
+    gap: 0;
+    z-index: 60;
+  }
+}

@@ -1,0 +1,33 @@
+.steps { background: var(--l-brand); }
+.head h2, .head p { color: var(--l-white); }
+.head p { color: #DCEFE6; }
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.col {
+  padding: 36px 28px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+.col:last-child { border-right: none; }
+.num {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 2.6rem;
+  color: var(--l-amber);
+  line-height: 1;
+}
+.col h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  color: var(--l-white);
+  margin-top: 14px;
+}
+.col p { color: #DCEFE6; margin-top: 10px; font-size: 0.95rem; }
+
+@media (max-width: 860px) {
+  .row { grid-template-columns: 1fr; }
+  .col { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+}
