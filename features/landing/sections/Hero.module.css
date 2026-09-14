@@ -1,4 +1,4 @@
-.hero { padding: 120px 0 88px; overflow: hidden; }
+.hero { padding: 125px 0 88px; overflow: hidden; }
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
